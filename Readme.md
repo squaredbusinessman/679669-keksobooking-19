@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Евгений Антропов](https://up.htmlacademy.ru/javascript/19/user/679669).
-* Наставник: `Неизвестно`.
+* Наставник: [Виталий Кудла](https://htmlacademy.ru/profile/vkudla).
 
 ---
 
