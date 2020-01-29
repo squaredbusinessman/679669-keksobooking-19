@@ -22,6 +22,7 @@ var getRandomInt = function (minimum, maximum) {
 var getRandomProp = function (objectPropValue) {
   return objectPropValue[getRandomInt(0, objectPropValue.length - 1)];
 };
+
 // Функция перемешивания массива
 var shuffleArr = function (arr) {
   var j;
@@ -34,14 +35,14 @@ var shuffleArr = function (arr) {
   }
   return arr;
 };
-// Ограничение размеров размерами блока
-var xMaxCoordinate = document.querySelector('.map');
-
-// Массив с похожими объявами
-var similarAds = [];
 
 // Функция создания массива из 8 сгенерированных объектов
-var addNotice = function () {
+var createNotices = function () {
+  // Массив с похожими объявами
+  var similarAds = [];
+  // Ограничение размеров размерами блока
+  var xMaxCoordinate = document.querySelector('.map');
+
   for (var i = 0; i < SIMILAR_AD_VALUE; i++) {
     similarAds.push({
       author: {
@@ -66,16 +67,19 @@ var addNotice = function () {
       }
     });
   }
+
+  return similarAds;
 };
 
 // Убрать класс map--faded  у блока map
-document.querySelector('.map').classList.remove('map--faded');
-
-// Шаблон #pin
-var pinTemplate = document.querySelector('#pin').content;
+var showMapActive = function () {
+  document.querySelector('.map').classList.remove('map--faded');
+};
 
 // Создаём DOM-элементы соответствуюшие меткам на карте
 var renderPin = function (noticeData) {
+  // Шаблон #pin
+  var pinTemplate = document.querySelector('#pin').content;
   var element = pinTemplate.cloneNode(true);
 
   element.querySelector('.map__pin').style.left = noticeData.location.x - PIN.width / 2 + 'px';
@@ -86,18 +90,19 @@ var renderPin = function (noticeData) {
   return element;
 };
 
-addNotice();
-
-// Отрисуем сгенерированные DOM-элементы в блок .map__pins
-var mapPins = document.querySelector('.map__pins');
-
 var renderPins = function () {
+  var similarAds = createNotices();
   var fragment = document.createDocumentFragment();
+  // Отрисуем сгенерированные DOM-элементы в блок .map__pins
+  var mapPins = document.querySelector('.map__pins');
+
   for (var i = 0; i < similarAds.length; i++) {
     fragment.appendChild(renderPin(similarAds[i]));
   }
 
   mapPins.appendChild(fragment);
 };
+
+showMapActive();
 
 renderPins();
