@@ -109,18 +109,68 @@ var renderPins = function () {
   mapPins.appendChild(fragment);
 };
 
-showMapActive();
+var createElement = function (data) {
+  var element = document.createElement(data.tagName);
 
-renderPins();
+  element.setAttribute('width', data.width);
+  element.setAttribute('height', data.height);
+  element.className = data.className;
 
-// функция отрисовки карточки отеля в шаблон #card
+  if (data.isPhoto) {
+    element.setAttribute('src', data.src);
+    element.setAttribute('alt', data.alt);
+  }
+
+  return element;
+};
+
+var deleteChilds = function (element) {
+  while (element.firstChild) {
+    element.removeChild(element.firstChild);
+  }
+};
+
+var renderPhotos = function (cardElement, photos) {
+  var photoElement = cardElement.querySelector('.popup__photos');
+
+  deleteChilds(photoElement);
+
+  photos.forEach(function (photoUrl) {
+    var photoItemElement = createElement({
+      tagName: 'img',
+      src: photoUrl,
+      width: 45,
+      height: 40,
+      alt: 'Фотография жилья',
+      className: 'popup__photo',
+      isPhoto: true
+    });
+
+    photoElement.appendChild(photoItemElement);
+  });
+};
+
+var renderFeatures = function (cardElement, features) {
+  var featureElement = cardElement.querySelector('.popup__features');
+
+  deleteChilds(featureElement);
+
+  features.forEach(function (feature) {
+    var featureItem = createElement({
+      tagName: 'li',
+      className: 'popup__feature popup__feature--' + feature,
+      width: 30,
+      height: 28
+    });
+
+    featureElement.appendChild(featureItem);
+  });
+};
+
+
 var renderCard = function (NoticeData) {
-  // найдём шаблон #card
   var cardTemplate = document.querySelector('#card').content;
   var cardElement = cardTemplate.cloneNode(true);
-  // манипуляции со списком возможностей отеля
-  var featuresList = cardElement.querySelector('.popup__features');
-  var featuresListChildren = featuresList.querySelectorAll('li');
 
   cardElement.querySelector('.popup__title').textContent = NoticeData.offer.title;
   cardElement.querySelector('.popup__text--address').textContent = NoticeData.offer.address;
@@ -129,28 +179,10 @@ var renderCard = function (NoticeData) {
   cardElement.querySelector('.popup__text--capacity').textContent = NoticeData.offer.rooms + ' комнат(а)ы для ' + NoticeData.offer.guests + ' гостей';
   cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + NoticeData.offer.checkin + ', выезд до ' + NoticeData.offer.checkout;
   cardElement.querySelector('.popup__description').textContent = NoticeData.offer.description;
-  cardElement.querySelector('.popup__photos img').src = NoticeData.offer.photos;
   cardElement.querySelector('.popup__avatar').src = NoticeData.author.avatar;
 
-  // удаляем часть имени класса, чтобы отобразить правильно в карточке
-  featuresListChildren.forEach(function (item) {
-    var classPart = item.classList[1].replace('popup__feature--', '');
-    if (NoticeData.offer.features.indexOf(classPart) === -1) {
-      item.remove();
-    }
-  });
-
-  // создаем дивы с img объявлений
-  for (var i = 0; i < NoticeData.offer.photos; i++) {
-    // фотографии в объявлении
-    var photosSrc = cardElement.querySelectorAll('.popup__photos');
-    var photoInsert = photosSrc.createElement('img');
-    photoInsert.className = 'popup__photo';
-    photoInsert.src = NoticeData.offer.photos[i];
-    photoInsert.width = 45 + 'px';
-    photoInsert.height = 40 + 'px';
-    photoInsert.alt = 'Фотография жилья';
-  }
+  renderPhotos(cardElement, NoticeData.offer.photos);
+  renderFeatures(cardElement, NoticeData.offer.features);
 
   return cardElement;
 };
@@ -164,4 +196,6 @@ var insertCard = function () {
   mapBlock.insertBefore(renderCard(similarAds[1]), mapFiltersContainer);
 };
 
+showMapActive();
+renderPins();
 insertCard();
