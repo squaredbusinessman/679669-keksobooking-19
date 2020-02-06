@@ -14,9 +14,9 @@ var PIN = {
   width: 78
 };
 var KEYCODES = {
-  esc: 27,
-  enter: 13,
-  leftclick: 0
+  esc: 'Escape',
+  enter: 'Enter',
+  leftclick: 1
 };
 var HOUSING_TYPES = {
   flat: {ru: 'Квартира'},
@@ -30,6 +30,17 @@ var ROOMS_CAPACITY = {
   '3': ['3', '2', '1'],
   '100': ['0']
 };
+
+var adForm = document.querySelector('.ad-form');
+var adFormAvatar = adForm.querySelector('.ad-form-header__input');
+var mapFiltersForm = document.querySelector('.map__filters');
+var mapPinMain = document.querySelector('.map__pin--main');
+var price = adForm.querySelector('#price');
+var housingType = adForm.querySelector('#type');
+var roomsValue = adForm.querySelector('#room_number');
+var guestsValue = adForm.querySelector('#capacity');
+var checkinValue = adForm.querySelector('#timein');
+var checkoutValue = adForm.querySelector('#timeout');
 
 // Функция генерации случайных чисел
 var getRandomInt = function (minimum, maximum) {
@@ -53,7 +64,6 @@ var shuffleArr = function (arr) {
   return arr;
 };
 
-// Неактивное состояние
 /* Неактивное состояние. При первом открытии, страница находится в неактивном состоянии:
   блок с картой находится в неактивном состоянии, форма подачи заявления заблокирована.
   Блок с картой .map содержит класс map--faded;
@@ -64,38 +74,38 @@ var shuffleArr = function (arr) {
 Единственное доступное действие в неактивном состоянии — перемещение метки .map__pin--main,
   являющейся контролом указания адреса объявления.
   Первое взаимодействие с меткой (mousedown) переводит страницу в активное состояние.*/
-/* var nonActiveState = function () {
-  var mapSection = document.querySelector('.map');
-  var adForm = document.querySelector('.ad-form');
-  var adFormFieldset = adForm.querySelector('fieldset');
-  var mapFilters = document.querySelector('.map__filters');
-  var mapFiltersSelect = mapFilters.querySelectorAll('select');
-  var mapFiltersFieldset = mapFilters.querySelectorAll('fieldset');
-
-  var toggleDisable = function () {
-    adFormFieldset.forEach(function (fieldset) {
-      fieldset.disabled = !fieldset.disabled;
-    });
-    mapFiltersFieldset.forEach(function (fieldset) {
-      fieldset.disabled = !fieldset.disabled;
-    });
-    mapFiltersSelect.forEach(function (select) {
-      select.disabled = !select.disabled;
-    });
-  };
-
-  if (mapSection.classList.contains('map--faded')) {
-    toggleDisable();
+var onMainPinEnterKeyDown = function (evt) {
+  if (evt.key === KEYCODES.enter) {
+    modeActiveOn();
   }
 };
 
-nonActiveState();*/
+var onMainPinLeftMouseDown = function (evt) {
+  if (evt.which === KEYCODES.leftclick) {
+    modeActiveOn();
+  }
+};
+
+var toggleFieldset = function () {
+  var fieldsets = adForm.querySelectorAll('fieldset.ad-form__element');
+  fieldsets.forEach(function (fieldset) {
+    fieldset.disabled = !fieldset.disabled;
+  });
+};
+
+var deactiveMode = function () {
+  document.querySelector('.map').classList.add('map--faded');
+  adFormAvatar.disabled = true;
+
+  mapPinMain.addEventListener('mousedown', onMainPinLeftMouseDown);
+  mapPinMain.addEventListener('keydown', onMainPinEnterKeyDown);
+};
+
+deactiveMode();
 
 // Функция создания массива из 8 сгенерированных объектов
 var createNotices = function () {
-  // Массив с похожими объявами
   var similarAds = [];
-  // Ограничение размеров размерами блока
   var xMaxCoordinate = document.querySelector('.map');
 
   for (var i = 0; i < SIMILAR_AD_VALUE; i++) {
@@ -126,14 +136,8 @@ var createNotices = function () {
   return similarAds;
 };
 
-// Убрать класс map--faded  у блока map
-var showMapActive = function () {
-  document.querySelector('.map').classList.remove('map--faded');
-};
-
 // Создаём DOM-элементы соответствуюшие меткам на карте
 var renderPin = function (noticeData) {
-  // Шаблон #pin
   var pinTemplate = document.querySelector('#pin').content;
   var element = pinTemplate.cloneNode(true);
 
@@ -148,7 +152,6 @@ var renderPin = function (noticeData) {
 var renderPins = function () {
   var similarAds = createNotices();
   var fragment = document.createDocumentFragment();
-  // Отрисуем сгенерированные DOM-элементы в блок .map__pins
   var mapPins = document.querySelector('.map__pins');
 
   for (var i = 0; i < similarAds.length; i++) {
@@ -247,91 +250,40 @@ var insertCard = function () {
   mapBlock.insertBefore(renderCard(similarAds[1]), mapFiltersContainer);
 };*/
 
-showMapActive();
-// renderPins();
-// insertCard();
-
-// ---------------------------- module4-task2
-
-
-document.querySelector('.map').classList.add('map--faded');
-
-var adForm = document.querySelector('.ad-form');
-
-adForm.classList.add('ad-form--disabled');
-
-var toggleFieldset = function () {
-  var fieldsets = adForm.querySelectorAll('fieldset.ad-form__element');
-
-  fieldsets.forEach(function (fieldset) {
-    fieldset.disabled = !fieldset.disabled;
-  });
-};
-
-toggleFieldset();
-
-var mapFiltersForm = document.querySelector('.map__filters');
-
-mapFiltersForm.disabled = true;
-
+// функция установки адресса в инпут
 var setAddress = function (isActive) {
-  var mapPinMain = document.querySelector('.map__pin--main');
+  var inputAddress = adForm.querySelector('input[name="address"]');
+
   var mainPinDeactiveState = {
     top: parseInt(mapPinMain.style.top, 10) + Math.ceil(mapPinMain.style.height / 2),
     left: parseInt(mapPinMain.style.left, 10) + Math.ceil(mapPinMain.style.width / 2)
   };
+
   var mainPinActiveState = {
     top: parseInt(mapPinMain.style.top, 10) + Math.ceil(mapPinMain.style.height / 2),
     left: parseInt(mapPinMain.style.left, 10) + PIN.height
   };
 
-  address.value = (isActive) ? mainPinActiveState.left + ', ' + mainPinActiveState.top : mainPinDeactiveState.left + ', ' + mainPinDeactiveState.top;
+  inputAddress.value = (isActive) ? mainPinActiveState.left + ', ' + mainPinActiveState.top : mainPinDeactiveState.left + ', ' + mainPinDeactiveState.top;
 };
 
-setAddress();
-
 // --------------------------------- Активное состояние -------------------------------------------
-var mapPinMain = document.querySelector('.map__pin--main');
-
 var modeActiveOn = function () {
   document.querySelector('.map').classList.remove('map--faded');
 
   setAddress(true);
   renderPins();
 
-  mapFiltersForm.classList.remove('ad-form--disabled');
+  adForm.classList.remove('ad-form--disabled');
+  adFormAvatar.disabled = false;
 
-  toggleFieldset();
+  adForm.querySelectorAll('fieldset').disabled = false;
 
   mapPinMain.removeEventListener('mousedown', modeActiveOn);
-  mapPinMain.removeEventListener('keydown', onMainPinKeyDown);
+  mapPinMain.removeEventListener('keydown', onMainPinEnterKeyDown);
 };
-
-var onMainPinMouseDown = function (evt) {
-  if (evt.button === KEYCODES.leftclick) {
-    modeActiveOn();
-  }
-};
-
-mapPinMain.addEventListener('mousedown', onMainPinMouseDown);
-
-var onMainPinKeyDown = function (evt) {
-  if (evt.key === KEYCODES.enter) {
-    modeActiveOn();
-  }
-};
-
-mapPinMain.addEventListener('keydown', onMainPinKeyDown);
 
 // module4-task2 третья часть задания - "НЕПРОСТАЯ ВАЛИДАЦИЯ"
-var address = adForm.querySelector('#address');
-var price = adForm.querySelector('#price');
-var housingType = adForm.querySelector('#type');
-var roomsValue = adForm.querySelector('#room_number');
-var guestsValue = adForm.querySelector('#capacity');
-var checkinValue = adForm.querySelector('#timein');
-var checkoutValue = adForm.querySelector('#timeout');
-
 var minimumPrice = function () {
   var housingTypeOptions = housingType.querySelector('option');
   var activeOption = housingType.options[housingType.selectedIndex];
@@ -341,6 +293,7 @@ var minimumPrice = function () {
 
 var minPriceValidation = function (itemOption) {
   price.min = HOUSING_TYPES[itemOption.value].min;
+  debugger
   price.placeholder = HOUSING_TYPES[itemOption.value].min;
 
 };
@@ -351,11 +304,6 @@ var onHousingTypeChange = function () {
   });
 };
 
-onHousingTypeChange();
-
-checkinValue.addEventListener('change', onChekinChange);
-checkoutValue.addEventListener('change', onCheckoutChange);
-
 var onRoomGuestChange = function () {
   if (guestsValue.options.length > 0) {
     [].forEach.call(guestsValue.options, function (item) {
@@ -365,10 +313,6 @@ var onRoomGuestChange = function () {
   }
 };
 
-onRoomGuestChange();
-
-roomsValue.addEventListener('change', onRoomGuestChange);
-
 var onChekinChange = function () {
   checkoutValue.value = checkinValue.value;
 };
@@ -376,3 +320,10 @@ var onChekinChange = function () {
 var onCheckoutChange = function () {
   checkinValue.value = checkoutValue.value;
 };
+
+onHousingTypeChange();
+onRoomGuestChange();
+
+roomsValue.addEventListener('change', onRoomGuestChange);
+checkinValue.addEventListener('change', onChekinChange);
+checkoutValue.addEventListener('change', onCheckoutChange);
