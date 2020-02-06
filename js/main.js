@@ -281,6 +281,13 @@ var modeActiveOn = function () {
 
   mapPinMain.removeEventListener('mousedown', modeActiveOn);
   mapPinMain.removeEventListener('keydown', onMainPinEnterKeyDown);
+
+  onHousingTypeChange();
+  onRoomGuestChange();
+
+  roomsValue.addEventListener('change', onRoomGuestChange);
+  checkinValue.addEventListener('change', onChekinChange);
+  checkoutValue.addEventListener('change', onCheckoutChange);
 };
 
 // module4-task2 третья часть задания - "НЕПРОСТАЯ ВАЛИДАЦИЯ"
@@ -321,9 +328,4 @@ var onCheckoutChange = function () {
   checkinValue.value = checkoutValue.value;
 };
 
-onHousingTypeChange();
-onRoomGuestChange();
 
-roomsValue.addEventListener('change', onRoomGuestChange);
-checkinValue.addEventListener('change', onChekinChange);
-checkoutValue.addEventListener('change', onCheckoutChange);
