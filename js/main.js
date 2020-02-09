@@ -24,23 +24,15 @@ var HOUSING_TYPES = {
   house: {ru: 'Дом'},
   palace: {ru: 'Дворец'}
 };
-var ROOMS_CAPACITY = {
-  '1': ['1'],
-  '2': ['2', '1'],
-  '3': ['3', '2', '1'],
-  '100': ['0']
-};
 
-var adForm = document.querySelector('.ad-form');
-var adFormAvatar = adForm.querySelector('.ad-form-header__input');
-var mapFiltersForm = document.querySelector('.map__filters');
-var mapPinMain = document.querySelector('.map__pin--main');
-var price = adForm.querySelector('#price');
-var housingType = adForm.querySelector('#type');
-var roomsValue = adForm.querySelector('#room_number');
-var guestsValue = adForm.querySelector('#capacity');
-var checkinValue = adForm.querySelector('#timein');
-var checkoutValue = adForm.querySelector('#timeout');
+var adFormElement = document.querySelector('.ad-form');
+var adFormAvatarElement = adFormElement.querySelector('.ad-form-header__input');
+var mapFiltersFormElement = document.querySelector('.map__filters');
+var mapPinMainElement = document.querySelector('.map__pin--main');
+var priceElement = adFormElement.querySelector('#price');
+var housingTypeElement = adFormElement.querySelector('#type');
+var roomNumberElement = adFormElement.querySelector('#room_number');
+var guestSelectElement = adFormElement.querySelector('#capacity');
 
 // Функция генерации случайных чисел
 var getRandomInt = function (minimum, maximum) {
@@ -64,44 +56,34 @@ var shuffleArr = function (arr) {
   return arr;
 };
 
-/* Неактивное состояние. При первом открытии, страница находится в неактивном состоянии:
-  блок с картой находится в неактивном состоянии, форма подачи заявления заблокирована.
-  Блок с картой .map содержит класс map--faded;
-Форма заполнения информации об объявлении .ad-form содержит класс ad-form--disabled;
-Все <input> и <select> формы .ad-form заблокированы с помощью атрибута disabled,
-  добавленного на них или на их родительские блоки fieldset;
-Форма с фильтрами .map__filters заблокирована так же, как и форма .ad-form;
-Единственное доступное действие в неактивном состоянии — перемещение метки .map__pin--main,
-  являющейся контролом указания адреса объявления.
-  Первое взаимодействие с меткой (mousedown) переводит страницу в активное состояние.*/
-var onMainPinEnterKeyDown = function (evt) {
+// Неактивное состояние.
+var onMainPinEnterKeyDownHandler = function (evt) {
   if (evt.key === KEYCODES.enter) {
-    modeActiveOn();
+    activateMode();
   }
 };
 
-var onMainPinLeftMouseDown = function (evt) {
+var onMainPinLeftMouseDownHandler = function (evt) {
   if (evt.which === KEYCODES.leftclick) {
-    modeActiveOn();
+    activateMode();
   }
 };
 
-var toggleFieldset = function () {
-  var fieldsets = adForm.querySelectorAll('fieldset.ad-form__element');
-  fieldsets.forEach(function (fieldset) {
-    fieldset.disabled = !fieldset.disabled;
+var toggleDisableAttribute = function (elements) {
+  elements.forEach(function (element) {
+    element.disabled = !element.disabled;
   });
 };
 
-var deactiveMode = function () {
+var deactivateMode = function () {
   document.querySelector('.map').classList.add('map--faded');
-  adFormAvatar.disabled = true;
 
-  mapPinMain.addEventListener('mousedown', onMainPinLeftMouseDown);
-  mapPinMain.addEventListener('keydown', onMainPinEnterKeyDown);
+  mapPinMainElement.addEventListener('mousedown', onMainPinLeftMouseDownHandler);
+  mapPinMainElement.addEventListener('keydown', onMainPinEnterKeyDownHandler);
+
+  roomNumberElement.removeEventListener('change', onRoomGuestChange);
+  housingTypeElement.removeEventListener('change', onHousingTypeChange);
 };
-
-deactiveMode();
 
 // Функция создания массива из 8 сгенерированных объектов
 var createNotices = function () {
@@ -252,80 +234,73 @@ var insertCard = function () {
 
 // функция установки адресса в инпут
 var setAddress = function (isActive) {
-  var inputAddress = adForm.querySelector('input[name="address"]');
+  var inputAddress = adFormElement.querySelector('input[name="address"]');
 
-  var mainPinDeactiveState = {
-    top: parseInt(mapPinMain.style.top, 10) + Math.ceil(mapPinMain.style.height / 2),
-    left: parseInt(mapPinMain.style.left, 10) + Math.ceil(mapPinMain.style.width / 2)
+  var mainPinState = {
+    top: parseInt(mapPinMainElement.style.top, 10) + Math.ceil(mapPinMainElement.style.height / 2),
+    left: parseInt(mapPinMainElement.style.left, 10) + Math.ceil(mapPinMainElement.style.width / 2)
   };
 
-  var mainPinActiveState = {
-    top: parseInt(mapPinMain.style.top, 10) + Math.ceil(mapPinMain.style.height / 2),
-    left: parseInt(mapPinMain.style.left, 10) + PIN.height
-  };
+  if (isActive) {
+    mainPinState.top += Math.round(mapPinMainElement.clientHeight / 2 + 16); // откуда 16?
+  }
 
-  inputAddress.value = (isActive) ? mainPinActiveState.left + ', ' + mainPinActiveState.top : mainPinDeactiveState.left + ', ' + mainPinDeactiveState.top;
+  inputAddress.value = mainPinState.left + ', ' + mainPinState.top;
 };
 
-// --------------------------------- Активное состояние -------------------------------------------
-var modeActiveOn = function () {
+// Активное состояние.
+var activateMode = function () {
   document.querySelector('.map').classList.remove('map--faded');
 
   setAddress(true);
+
+  adFormElement.classList.remove('ad-form--disabled');
+
+  mapPinMainElement.removeEventListener('mousedown', activateMode);
+  mapPinMainElement.removeEventListener('keydown', onMainPinEnterKeyDownHandler);
+
+  roomNumberElement.addEventListener('change', onRoomGuestChange);
+  housingTypeElement.addEventListener('change', onHousingTypeChange);
+  // checkinValue.addEventListener('change', onChekinChange);
+  // checkoutValue.addEventListener('change', onCheckoutChange);
+
   renderPins();
-
-  adForm.classList.remove('ad-form--disabled');
-  adFormAvatar.disabled = false;
-
-  adForm.querySelectorAll('fieldset').disabled = false;
-
-  mapPinMain.removeEventListener('mousedown', modeActiveOn);
-  mapPinMain.removeEventListener('keydown', onMainPinEnterKeyDown);
-
-  onHousingTypeChange();
-  onRoomGuestChange();
-
-  roomsValue.addEventListener('change', onRoomGuestChange);
-  checkinValue.addEventListener('change', onChekinChange);
-  checkoutValue.addEventListener('change', onCheckoutChange);
 };
 
-// module4-task2 третья часть задания - "НЕПРОСТАЯ ВАЛИДАЦИЯ"
+// module4-task2 - "НЕПРОСТАЯ ВАЛИДАЦИЯ"
 var minimumPrice = function () {
-  var housingTypeOptions = housingType.querySelector('option');
-  var activeOption = housingType.options[housingType.selectedIndex];
+  var housingTypeOptions = housingTypeElement.querySelector('option');
+  var activeOption = housingTypeElement.options[housingTypeElement.selectedIndex];
 
   minPriceValidation(activeOption, housingTypeOptions);
 };
 
 var minPriceValidation = function (itemOption) {
-  price.min = HOUSING_TYPES[itemOption.value].min;
-  debugger
-  price.placeholder = HOUSING_TYPES[itemOption.value].min;
-
+  priceElement.min = HOUSING_TYPES[itemOption.value].min;
+  priceElement.placeholder = HOUSING_TYPES[itemOption.value].min;
 };
 
 var onHousingTypeChange = function () {
-  housingType.addEventListener('change', function () {
+  housingTypeElement.addEventListener('change', function () {
     minimumPrice();
   });
 };
 
 var onRoomGuestChange = function () {
-  if (guestsValue.options.length > 0) {
-    [].forEach.call(guestsValue.options, function (item) {
+  if (guestSelectElement.options.length > 0) {
+    [].forEach.call(guestSelectElement.options, function (item) {
       item.selected = (ROOMS_CAPACITY[roomsValue.value][0] === item.value) ? true : false;
       item.hidden = (ROOMS_CAPACITY[roomsValue.value].indexOf(item.value) >= 0) ? false : true;
     });
   }
 };
 
-var onChekinChange = function () {
+/* var onChekinChange = function () {
   checkoutValue.value = checkinValue.value;
 };
 
 var onCheckoutChange = function () {
   checkinValue.value = checkoutValue.value;
-};
+};*/
 
-
+deactivateMode();
