@@ -11,28 +11,25 @@ var AD_MOCKS = {
 var SIMILAR_AD_VALUE = 8;
 var PIN = {
   height: 156,
-  width: 78
+  width: 78,
+  paddingTop: 16
 };
 var KEYCODES = {
   esc: 'Escape',
   enter: 'Enter',
   leftclick: 1
 };
-var HOUSING_TYPES = {
-  flat: {ru: 'Квартира'},
-  bungalow: {ru: 'Бунгало'},
-  house: {ru: 'Дом'},
-  palace: {ru: 'Дворец'}
-};
 
+var mapBlockElement = document.querySelector('.map');
 var adFormElement = document.querySelector('.ad-form');
-var adFormAvatarElement = adFormElement.querySelector('.ad-form-header__input');
-var mapFiltersFormElement = document.querySelector('.map__filters');
+var adFormFields = adFormElement.querySelectorAll('fieldset, select, input');
 var mapPinMainElement = document.querySelector('.map__pin--main');
 var priceElement = adFormElement.querySelector('#price');
 var housingTypeElement = adFormElement.querySelector('#type');
 var roomNumberElement = adFormElement.querySelector('#room_number');
 var guestSelectElement = adFormElement.querySelector('#capacity');
+var checkinElement = adFormElement.querySelector('#timein');
+var checkoutElement = adFormElement.querySelector('#timeout');
 
 // Функция генерации случайных чисел
 var getRandomInt = function (minimum, maximum) {
@@ -56,39 +53,9 @@ var shuffleArr = function (arr) {
   return arr;
 };
 
-// Неактивное состояние.
-var onMainPinEnterKeyDownHandler = function (evt) {
-  if (evt.key === KEYCODES.enter) {
-    activateMode();
-  }
-};
-
-var onMainPinLeftMouseDownHandler = function (evt) {
-  if (evt.which === KEYCODES.leftclick) {
-    activateMode();
-  }
-};
-
-var toggleDisableAttribute = function (elements) {
-  elements.forEach(function (element) {
-    element.disabled = !element.disabled;
-  });
-};
-
-var deactivateMode = function () {
-  document.querySelector('.map').classList.add('map--faded');
-
-  mapPinMainElement.addEventListener('mousedown', onMainPinLeftMouseDownHandler);
-  mapPinMainElement.addEventListener('keydown', onMainPinEnterKeyDownHandler);
-
-  roomNumberElement.removeEventListener('change', onRoomGuestChange);
-  housingTypeElement.removeEventListener('change', onHousingTypeChange);
-};
-
 // Функция создания массива из 8 сгенерированных объектов
 var createNotices = function () {
   var similarAds = [];
-  var xMaxCoordinate = document.querySelector('.map');
 
   for (var i = 0; i < SIMILAR_AD_VALUE; i++) {
     similarAds.push({
@@ -109,7 +76,7 @@ var createNotices = function () {
         photos: shuffleArr(AD_MOCKS.adPhoto).slice(0, getRandomInt(1, AD_MOCKS.adPhoto.length))
       },
       location: {
-        x: getRandomInt(1, xMaxCoordinate.offsetWidth - 1),
+        x: getRandomInt(1, mapBlockElement.offsetWidth - 1),
         y: getRandomInt(250, 630)
       }
     });
@@ -226,10 +193,9 @@ var renderFeatures = function (cardElement, features) {
 // функция вставки карточки первого элемента массива объявлений
 var insertCard = function () {
   var similarAds = createNotices();
-  var mapBlock = document.querySelector('.map');
   var mapFiltersContainer = document.querySelector('.map__filters-container');
 
-  mapBlock.insertBefore(renderCard(similarAds[1]), mapFiltersContainer);
+  mapBlockElement.insertBefore(renderCard(similarAds[1]), mapFiltersContainer);
 };*/
 
 // функция установки адресса в инпут
@@ -242,7 +208,7 @@ var setAddress = function (isActive) {
   };
 
   if (isActive) {
-    mainPinState.top += Math.round(mapPinMainElement.clientHeight / 2 + 16); // откуда 16?
+    mainPinState.top += Math.round(mapPinMainElement.clientHeight / 2 + PIN.paddingTop);
   }
 
   inputAddress.value = mainPinState.left + ', ' + mainPinState.top;
@@ -250,57 +216,97 @@ var setAddress = function (isActive) {
 
 // Активное состояние.
 var activateMode = function () {
-  document.querySelector('.map').classList.remove('map--faded');
-
-  setAddress(true);
-
+  mapBlockElement.classList.remove('map--faded');
   adFormElement.classList.remove('ad-form--disabled');
 
-  mapPinMainElement.removeEventListener('mousedown', activateMode);
-  mapPinMainElement.removeEventListener('keydown', onMainPinEnterKeyDownHandler);
+  setAddress(true);
+  toggleDisableAttribute(adFormFields);
 
-  roomNumberElement.addEventListener('change', onRoomGuestChange);
-  housingTypeElement.addEventListener('change', onHousingTypeChange);
-  // checkinValue.addEventListener('change', onChekinChange);
-  // checkoutValue.addEventListener('change', onCheckoutChange);
+  mapPinMainElement.removeEventListener('mousedown', mainPinLeftMouseDownHandler);
+  mapPinMainElement.removeEventListener('keydown', mainPinEnterKeyDownHandler);
+
+  roomNumberElement.addEventListener('change', roomGuestChangeHandler);
+  housingTypeElement.addEventListener('change', housingTypeChangeHandler);
+  checkinElement.addEventListener('change', chekinChangeHandler);
+  checkoutElement.addEventListener('change', checkoutChangeHandler);
 
   renderPins();
 };
 
 // module4-task2 - "НЕПРОСТАЯ ВАЛИДАЦИЯ"
-var minimumPrice = function () {
-  var housingTypeOptions = housingTypeElement.querySelector('option');
-  var activeOption = housingTypeElement.options[housingTypeElement.selectedIndex];
-
-  minPriceValidation(activeOption, housingTypeOptions);
+var housingTypeChangeHandler = function () {
+  switch (housingTypeElement.value) {
+    case 'bungalo':
+      priceElement.placeholder = 0;
+      return;
+    case 'flat':
+      priceElement.placeholder = 1000;
+      return;
+    case 'house':
+      priceElement.placeholder = 5000;
+      return;
+    case 'palace':
+      priceElement.placeholder = 10000;
+      return;
+  }
+  priceElement.min = priceElement.placeholder;
 };
 
-var minPriceValidation = function (itemOption) {
-  priceElement.min = HOUSING_TYPES[itemOption.value].min;
-  priceElement.placeholder = HOUSING_TYPES[itemOption.value].min;
+var chekinChangeHandler = function () {
+  checkoutElement.value = checkinElement.value;
 };
 
-var onHousingTypeChange = function () {
-  housingTypeElement.addEventListener('change', function () {
-    minimumPrice();
-  });
+var checkoutChangeHandler = function () {
+  checkinElement.value = checkoutElement.value;
 };
 
-var onRoomGuestChange = function () {
-  if (guestSelectElement.options.length > 0) {
-    [].forEach.call(guestSelectElement.options, function (item) {
-      item.selected = (ROOMS_CAPACITY[roomsValue.value][0] === item.value) ? true : false;
-      item.hidden = (ROOMS_CAPACITY[roomsValue.value].indexOf(item.value) >= 0) ? false : true;
-    });
+// 1-1 2-2 or 1 3 - 3 or 2 or 1 100 - none
+var roomGuestChangeHandler = function () {
+  var rooms = roomNumberElement.value;
+  var guests = guestSelectElement.value;
+  var error = '';
+
+  if (rooms === 100 && guests > 0) {
+    error = 'Для выбранного количества гостей размещение невозможно';
+  } else if (guests > rooms || guests === 0) {
+    error = 'Количество гостей больше или меньше чем комнат';
+  }
+
+  rooms.setCustomValidity(error);
+};
+
+var mainPinEnterKeyDownHandler = function (evt) {
+  if (evt.key === KEYCODES.enter) {
+    activateMode();
   }
 };
 
-/* var onChekinChange = function () {
-  checkoutValue.value = checkinValue.value;
+var mainPinLeftMouseDownHandler = function (evt) {
+  if (evt.which === KEYCODES.leftclick) {
+    activateMode();
+  }
 };
 
-var onCheckoutChange = function () {
-  checkinValue.value = checkoutValue.value;
-};*/
+var toggleDisableAttribute = function (elements) {
+  elements.forEach(function (element) {
+    element.disabled = !element.disabled;
+  });
+};
+
+var deactivateMode = function () {
+  mapBlockElement.classList.add('map--faded');
+  adFormElement.classList.add('ad-form--disabled');
+
+  setAddress(false);
+  toggleDisableAttribute(adFormFields);
+
+  mapPinMainElement.addEventListener('mousedown', mainPinLeftMouseDownHandler);
+  mapPinMainElement.addEventListener('keydown', mainPinEnterKeyDownHandler);
+
+  roomNumberElement.removeEventListener('change', roomGuestChangeHandler);
+  housingTypeElement.removeEventListener('change', housingTypeChangeHandler);
+  checkinElement.removeEventListener('change', chekinChangeHandler);
+  checkoutElement.removeEventListener('change', checkoutChangeHandler);
+};
 
 deactivateMode();
