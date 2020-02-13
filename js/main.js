@@ -19,6 +19,18 @@ var KEYCODES = {
   enter: 'Enter',
   leftclick: 1
 };
+var HOUSING_TYPES = {
+  flat: {ru: 'Квартира'},
+  bungalow: {ru: 'Бунгало'},
+  house: {ru: 'Дом'},
+  palace: {ru: 'Дворец'}
+};
+var ROOMS_CAPACITY = {
+  '1': ['1'],
+  '2': ['2', '1'],
+  '3': ['3', '2', '1'],
+  '100': ['0']
+};
 
 var mapBlockElement = document.querySelector('.map');
 var adFormElement = document.querySelector('.ad-form');
@@ -36,6 +48,7 @@ var getRandomInt = function (minimum, maximum) {
   return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
 };
 
+// Функция генерации случайного свойства объекта
 var getRandomProp = function (objectPropValue) {
   return objectPropValue[getRandomInt(0, objectPropValue.length - 1)];
 };
@@ -53,6 +66,15 @@ var shuffleArr = function (arr) {
   return arr;
 };
 
+// Функция создания собственного события
+var createEvent = function (eventName, eventUserData) {
+  var customEvent = new CustomEvent(eventName, {
+    eventUserData: eventUserData,
+    bubbles: true,
+    cancelable: true
+  });
+  return customEvent;
+};
 // Функция создания массива из 8 сгенерированных объектов
 var createNotices = function () {
   var similarAds = [];
@@ -95,6 +117,18 @@ var renderPin = function (noticeData) {
   element.querySelector('.map__pin img').src = noticeData.author.avatar;
   element.querySelector('.map__pin img').alt = noticeData.offer.title;
 
+  // обработчик событий отрисовки карточки при клике или кейдауне на пин
+  element.addEventListener('click', function (evt) {
+    if (evt.which === KEYCODES.leftclick) {
+      insertCard();
+    }
+  });
+  element.addEventListener('keydown', function (evt) {
+    if (evt.key === KEYCODES.enter) {
+      insertCard();
+    }
+  });
+
   return element;
 };
 
@@ -110,7 +144,7 @@ var renderPins = function () {
   mapPins.appendChild(fragment);
 };
 
-/* var createElement = function (data) {
+var createElement = function (data) {
   var element = document.createElement(data.tagName);
 
   element.setAttribute('width', data.width);
@@ -129,9 +163,9 @@ var deleteChilds = function (element) {
   while (element.firstChild) {
     element.removeChild(element.firstChild);
   }
-};*/
+};
 
-/*
+
 var renderPhotos = function (cardElement, photos) {
   var photoElement = cardElement.querySelector('.popup__photos');
 
@@ -168,12 +202,11 @@ var renderFeatures = function (cardElement, features) {
     featureElement.appendChild(featureItem);
   });
 };
-*/
 
-
-/* var renderCard = function (NoticeData) {
+var renderCard = function (NoticeData) {
   var cardTemplate = document.querySelector('#card').content;
   var cardElement = cardTemplate.cloneNode(true);
+  var mapCardCloseElement = cardTemplate.querySelector('.popup__close');
 
   cardElement.querySelector('.popup__title').textContent = NoticeData.offer.title;
   cardElement.querySelector('.popup__text--address').textContent = NoticeData.offer.address;
@@ -187,16 +220,42 @@ var renderFeatures = function (cardElement, features) {
   renderPhotos(cardElement, NoticeData.offer.photos);
   renderFeatures(cardElement, NoticeData.offer.features);
 
+  // обработчики закрытия карточки объявления
+  mapCardCloseElement.addEventListener('click', function (evt) {
+    if (evt.which === KEYCODES.leftclick) {
+      removeCard().remove();
+    }
+  });
+  mapCardCloseElement.addEventListener('keydown', function (evt) {
+    if (evt.key === KEYCODES.enter) {
+      removeCard().remove();
+    }
+  });
+  window.addEventListener('keydown', function (evt) {
+    if (evt.key === KEYCODES.esc) {
+      removeCard().remove();
+    }
+  });
+
   return cardElement;
 };
 
-// функция вставки карточки первого элемента массива объявлений
+// функции добавления в DOM попапа с карточкой
 var insertCard = function () {
   var similarAds = createNotices();
   var mapFiltersContainer = document.querySelector('.map__filters-container');
 
-  mapBlockElement.insertBefore(renderCard(similarAds[1]), mapFiltersContainer);
-};*/
+  mapBlockElement.insertBefore(renderCard(similarAds), mapFiltersContainer);
+};
+
+// функция удаления карточки из DOM
+var removeCard = function () {
+  var card = document.querySelector('.map__card');
+
+  if (card) {
+    card.remove();
+  }
+};
 
 // функция установки адресса в инпут
 var setAddress = function (isActive) {
@@ -266,6 +325,14 @@ var roomGuestChangeHandler = function () {
   var guests = guestSelectElement.value;
   var error = '';
 
+  // эта функция всё же нужна по ТЗ, но почему-то перестала работать(
+  if (guestSelectElement.options.length > 0) {
+    [].forEach.call(guestSelectElement.options, function (item) {
+      item.selected = (ROOMS_CAPACITY[roomNumberElement.value][0] === item.value) ? true : false;
+      item.hidden = (ROOMS_CAPACITY[roomNumberElement.value].indexOf(item.value) >= 0) ? false : true;
+    });
+  }
+
   if (rooms === 100 && guests > 0) {
     error = 'Для выбранного количества гостей размещение невозможно';
   } else if (guests > rooms || guests === 0) {
@@ -308,5 +375,8 @@ var deactivateMode = function () {
   checkinElement.removeEventListener('change', chekinChangeHandler);
   checkoutElement.removeEventListener('change', checkoutChangeHandler);
 };
+
+// module4-task3
+
 
 deactivateMode();
