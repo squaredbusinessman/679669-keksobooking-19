@@ -25,25 +25,18 @@ var HOUSING_TYPES = {
   house: {ru: 'Дом'},
   palace: {ru: 'Дворец'}
 };
-var ROOMS_CAPACITY = {
-  '1': ['1'],
-  '2': ['2', '1'],
-  '3': ['3', '2', '1'],
-  '100': ['0']
-};
 
 var mapBlockElement = document.querySelector('.map');
 var adFormElement = document.querySelector('.ad-form');
 var adFormFields = adFormElement.querySelectorAll('fieldset, select, input');
 var mapPinMainElement = document.querySelector('.map__pin--main');
+var mapPinsElement = mapBlockElement.querySelector('.map__pins');
 var priceElement = adFormElement.querySelector('#price');
 var housingTypeElement = adFormElement.querySelector('#type');
 var roomNumberElement = adFormElement.querySelector('#room_number');
 var guestSelectElement = adFormElement.querySelector('#capacity');
 var checkinElement = adFormElement.querySelector('#timein');
 var checkoutElement = adFormElement.querySelector('#timeout');
-var popupElement = document.querySelector('.popup');
-var popupCloseElement = document.querySelector('.popup__close');
 
 // Функция генерации случайных чисел
 var getRandomInt = function (minimum, maximum) {
@@ -101,23 +94,25 @@ var createNotices = function () {
 };
 
 // функции добавления в DOM попапа с карточкой
-var insertCard = function () {
-  var similarAds = createNotices();
+var insertCard = function (dataCard) {
   var mapFiltersContainer = document.querySelector('.map__filters-container');
 
-  mapBlockElement.insertBefore(renderCard(similarAds), mapFiltersContainer);
+  mapBlockElement.insertBefore(renderCard(dataCard), mapFiltersContainer);
 };
+
 // функция удаления карточки из DOM
 var tryCloseCard = function () {
   var cardElement = mapBlockElement.querySelector('.popup');
 
   if (cardElement) {
+    var popupCloseElement = cardElement.querySelector('.popup__close');
+
+    popupCloseElement.removeEventListener('click', popupCloseLeftMouseDownHandler);
+    popupCloseElement.removeEventListener('keydown', popupCloseKeydownEnterHandler);
+    window.removeEventListener('keydown', popupCloseKeydownEscHandler);
+
     cardElement.remove();
   }
-
-  popupCloseElement.removeEventListener('click', popupCloseLeftMouseDownHandler);
-  popupCloseElement.removeEventListener('keydown', popupCloseKeydownEnterHandler);
-  window.removeEventListener('keydown', popupCloseKeydownEscHandler);
 };
 
 // Создаём DOM-элементы соответствуюшие меткам на карте
@@ -131,34 +126,33 @@ var renderPin = function (noticeData) {
   element.querySelector('img').alt = noticeData.offer.title;
 
   // обработчик событий отрисовки карточки при клике или кейдауне на пин
-  element.addEventListener('mousedown', mapPinLeftMouseDownHandler);
-  element.addEventListener('keydown', mapPinEnterKeydownHandler);
+  element.addEventListener('mousedown', function (evt) {
+    if (evt.which === KEYCODES.leftclick) {
+      tryCloseCard();
+      insertCard(noticeData);
+    }
+  });
+
+  element.addEventListener('keydown', function (evt) {
+    if (evt.key === KEYCODES.enter) {
+      tryCloseCard();
+      insertCard(noticeData);
+    }
+  });
 
   return element;
 };
 
-var mapPinLeftMouseDownHandler = function (evt) {
-  if (evt.which === KEYCODES.leftclick) {
-    insertCard();
-  }
-};
-
-var mapPinEnterKeydownHandler = function (evt) {
-  if (evt.key === KEYCODES.enter) {
-    insertCard();
-  }
-};
 
 var renderPins = function () {
   var similarAds = createNotices();
   var fragment = document.createDocumentFragment();
-  var mapPins = document.querySelector('.map__pins');
 
   for (var i = 0; i < similarAds.length; i++) {
     fragment.appendChild(renderPin(similarAds[i]));
   }
 
-  mapPins.appendChild(fragment);
+  mapPinsElement.appendChild(fragment);
 };
 
 var createElement = function (data) {
@@ -175,7 +169,7 @@ var createElement = function (data) {
   return element;
 };
 
-var deleteChilds = function (element) {
+var deleteChildren = function (element) {
   while (element.firstChild) {
     element.removeChild(element.firstChild);
   }
@@ -185,7 +179,7 @@ var deleteChilds = function (element) {
 var renderPhotos = function (cardElement, photos) {
   var photoElement = cardElement.querySelector('.popup__photos');
 
-  deleteChilds(photoElement);
+  deleteChildren(photoElement);
 
   photos.forEach(function (photoUrl) {
     var photoItemElement = createElement({
@@ -205,7 +199,7 @@ var renderPhotos = function (cardElement, photos) {
 var renderFeatures = function (cardElement, features) {
   var featureElement = cardElement.querySelector('.popup__features');
 
-  deleteChilds(featureElement);
+  deleteChildren(featureElement);
 
   features.forEach(function (feature) {
     var featureItem = createElement({
@@ -222,7 +216,7 @@ var renderFeatures = function (cardElement, features) {
 var renderCard = function (NoticeData) {
   var cardTemplate = document.querySelector('#card').content;
   var cardElement = cardTemplate.cloneNode(true);
-
+  var popupCloseElement = cardElement.querySelector('.popup__close');
 
   cardElement.querySelector('.popup__title').textContent = NoticeData.offer.title;
   cardElement.querySelector('.popup__text--address').textContent = NoticeData.offer.address;
@@ -288,7 +282,6 @@ var activateMode = function () {
 
   mapPinMainElement.removeEventListener('mousedown', mainPinLeftMouseDownHandler);
   mapPinMainElement.removeEventListener('keydown', mainPinEnterKeyDownHandler);
-  roomNumberElement.addEventListener('change', roomGuestChangeInputDisableHandler);
   roomNumberElement.addEventListener('change', roomGuestChangeHandler);
   housingTypeElement.addEventListener('change', housingTypeChangeHandler);
   checkinElement.addEventListener('change', chekinChangeHandler);
@@ -325,15 +318,7 @@ var checkoutChangeHandler = function () {
   checkinElement.value = checkoutElement.value;
 };
 
-// эта функция всё же нужна по ТЗ, но почему-то перестала работать(
-var roomGuestChangeInputDisableHandler = function () {
-  if (guestSelectElement.options.length > 0) {
-    [].forEach.call(guestSelectElement.options, function (item) {
-      item.selected = (ROOMS_CAPACITY[roomNumberElement.value][0] === item.value) ? true : false;
-      item.hidden = (ROOMS_CAPACITY[roomNumberElement.value].indexOf(item.value) >= 0) ? false : true;
-    });
-  }
-};
+
 // 1-1 2-2 or 1 3 - 3 or 2 or 1 100 - none
 var roomGuestChangeHandler = function () {
   var rooms = roomNumberElement.value;
@@ -377,7 +362,6 @@ var deactivateMode = function () {
   mapPinMainElement.addEventListener('mousedown', mainPinLeftMouseDownHandler);
   mapPinMainElement.addEventListener('keydown', mainPinEnterKeyDownHandler);
 
-  roomNumberElement.removeEventListener('change', roomGuestChangeInputDisableHandler);
   roomNumberElement.removeEventListener('change', roomGuestChangeHandler);
   housingTypeElement.removeEventListener('change', housingTypeChangeHandler);
   checkinElement.removeEventListener('change', chekinChangeHandler);
