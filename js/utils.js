@@ -73,14 +73,14 @@
   };
 
   window.utils = {
-    getRandomInt: getRandomInt(),
-    getRandomProp: getRandomProp(),
-    shuffleArr: shuffleArr(),
-    createElement: createElement(),
-    deleteChildren: deleteChildren(),
-    toggleDisableAttribute: toggleDisableAttribute(),
-    isEscEvent: isEscEvent(),
-    isEnterEvent: isEnterEvent(),
-    isLeftClickEvent: isLeftClickEvent()
+    getRandomInt: getRandomInt,
+    getRandomProp: getRandomProp,
+    shuffleArr: shuffleArr,
+    createElement: createElement,
+    deleteChildren: deleteChildren,
+    toggleDisableAttribute: toggleDisableAttribute,
+    isEscEvent: isEscEvent,
+    isEnterEvent: isEnterEvent,
+    isLeftClickEvent: isLeftClickEvent
   };
 })();

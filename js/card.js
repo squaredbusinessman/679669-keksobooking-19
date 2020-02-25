@@ -129,8 +129,8 @@
   };
 
   window.card = {
-    renderCard: renderCard(),
-    tryCloseCard: tryCloseCard(),
-    createNotices: createNotices()
+    renderCard: renderCard,
+    tryCloseCard: tryCloseCard,
+    createNotices: createNotices
   };
 })();

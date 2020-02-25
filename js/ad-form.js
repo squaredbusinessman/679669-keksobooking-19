@@ -46,9 +46,9 @@
   };
 
   window.adForm = {
-    housingTypeChangeHandler: housingTypeChangeHandler(),
-    checkinChangeHandler: checkinChangeHandler(),
-    checkoutChangeHandler: checkoutChangeHandler(),
-    roomGuestChangeHandler: roomGuestChangeHandler()
+    housingTypeChangeHandler: housingTypeChangeHandler,
+    checkinChangeHandler: checkinChangeHandler,
+    checkoutChangeHandler: checkoutChangeHandler,
+    roomGuestChangeHandler: roomGuestChangeHandler
   };
 })();

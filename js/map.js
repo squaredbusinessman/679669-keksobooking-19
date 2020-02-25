@@ -11,7 +11,7 @@
     };
 
     if (isActive) {
-      mainPinState.top += Math.round(window.mapPinMainElement.clientHeight / 2 + window.data.PIN.paddingTop);
+      mainPinState.top += Math.round(window.data.mapPinMainElement.clientHeight / 2 + window.data.PIN.paddingTop);
     }
 
     inputAddress.value = mainPinState.left + ', ' + mainPinState.top;
@@ -83,9 +83,8 @@
     window.data.checkoutElement.removeEventListener('change', window.adForm.checkoutChangeHandler);
   };
 
-  deactivateMode();
-
   window.map = {
-    insertCard: insertCard()
+    insertCard: insertCard,
+    deactivateMode: deactivateMode
   };
 })();
