@@ -18,6 +18,7 @@
     window.data.checkinElement.addEventListener('change', window.adForm.checkinChangeHandler);
     window.data.checkoutElement.addEventListener('change', window.adForm.checkoutChangeHandler);
 
+    window.dragNDrop.mainPinRemoveDragEvent();
     window.pin.renderPins();
   };
 
@@ -48,6 +49,8 @@
     window.data.housingTypeElement.removeEventListener('change', window.adForm.housingTypeChangeHandler);
     window.data.checkinElement.removeEventListener('change', window.adForm.checkinChangeHandler);
     window.data.checkoutElement.removeEventListener('change', window.adForm.checkoutChangeHandler);
+
+    window.dragNDrop.mainPinAddDragEvent();
   };
 
   window.map = {

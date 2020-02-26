@@ -22,23 +22,42 @@
       adPhoto: ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'],
       homeType: ['palace', 'flat', 'house', 'bungalow']
     },
+
     SIMILAR_AD_VALUE: 8,
+
     PIN: {
       height: 156,
       width: 78,
       paddingTop: 16
     },
+
+    MAIN_PIN: {
+      width: 65,
+      height: 80,
+      centerX: 570,
+      centerY: 375
+    },
+
     KEYCODES: {
       esc: 'Escape',
       enter: 'Enter',
       leftclick: 0
     },
+
     HOUSING_TYPES: {
       flat: {ru: 'Квартира'},
       bungalow: {ru: 'Бунгало'},
       house: {ru: 'Дом'},
       palace: {ru: 'Дворец'}
     },
+
+    COORDINATE_LIMITER: {
+      minX: 0,
+      maxX: 1200,
+      minY: 130,
+      maxY: 600
+    },
+
     mapBlockElement: mapBlockElement,
     adFormElement: adFormElement,
     adFormFields: adFormFields,
