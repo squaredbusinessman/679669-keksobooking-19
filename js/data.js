@@ -31,7 +31,7 @@
     KEYCODES: {
       esc: 'Escape',
       enter: 'Enter',
-      leftclick: 1
+      leftclick: 0
     },
     HOUSING_TYPES: {
       flat: {ru: 'Квартира'},

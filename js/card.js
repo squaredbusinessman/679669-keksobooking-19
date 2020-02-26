@@ -51,7 +51,7 @@
           avatar: 'img/avatars/user' + ('0' + window.data.AD_MOCKS.userPicNum[window.utils.getRandomInt(0, window.data.AD_MOCKS.userPicNum.length - 1)]) + '.png'
         },
         offer: {
-          title: window.utils.getRandomInt(window.data.AD_MOCKS.adTitle),
+          title: window.utils.getRandomProp(window.data.AD_MOCKS.adTitle),
           address: window.utils.getRandomInt(0, 1000) + ',' + window.utils.getRandomInt(0, 1000),
           price: window.utils.getRandomInt(4000, 50000),
           type: window.utils.getRandomProp(window.data.AD_MOCKS.homeType),
@@ -110,6 +110,13 @@
     });
   };
 
+  // функции добавления в DOM попапа с карточкой
+  var insertCard = function (dataCard) {
+    var mapFiltersContainer = document.querySelector('.map__filters-container');
+
+    window.data.mapBlockElement.insertBefore(window.card.renderCard(dataCard), mapFiltersContainer);
+  };
+
   var popupCloseLeftMouseDownHandler = function (evt) {
     if (evt.which === window.data.KEYCODES.leftclick) {
       tryCloseCard();
@@ -129,6 +136,7 @@
   };
 
   window.card = {
+    insertCard: insertCard,
     renderCard: renderCard,
     tryCloseCard: tryCloseCard,
     createNotices: createNotices

@@ -1,7 +1,23 @@
 'use strict';
 
 (function () {
-// module4-task2 - "НЕПРОСТАЯ ВАЛИДАЦИЯ"
+  // функция установки адресса в инпут
+  var setAddress = function (isActive) {
+    var inputAddress = window.data.adFormElement.querySelector('input[name="address"]');
+
+    var mainPinState = {
+      top: parseInt(window.data.mapPinMainElement.style.top, 10) + Math.ceil(window.data.mapPinMainElement.style.height / 2),
+      left: parseInt(window.data.mapPinMainElement.style.left, 10) + Math.ceil(window.data.mapPinMainElement.style.width / 2)
+    };
+
+    if (isActive) {
+      mainPinState.top += Math.round(window.data.mapPinMainElement.clientHeight / 2 + window.data.PIN.paddingTop);
+    }
+
+    inputAddress.value = mainPinState.left + ', ' + mainPinState.top;
+  };
+
+  // module4-task2 - "НЕПРОСТАЯ ВАЛИДАЦИЯ"
   var housingTypeChangeHandler = function () {
     switch (window.data.housingTypeElement.value) {
       case 'bungalo':
@@ -42,10 +58,11 @@
       error = 'Количество гостей больше или меньше чем комнат';
     }
 
-    rooms.setCustomValidity(error);
+    window.data.roomNumberElement.setCustomValidity(error);
   };
 
   window.adForm = {
+    setAdress: setAddress,
     housingTypeChangeHandler: housingTypeChangeHandler,
     checkinChangeHandler: checkinChangeHandler,
     checkoutChangeHandler: checkoutChangeHandler,

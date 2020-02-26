@@ -15,21 +15,34 @@
     element.addEventListener('mousedown', function (evt) {
       if (evt.which === window.data.KEYCODES.leftclick) {
         window.card.tryCloseCard();
-        window.map.insertCard(noticeData);
+        window.card.insertCard(noticeData);
       }
     });
 
     element.addEventListener('keydown', function (evt) {
       if (evt.key === window.data.KEYCODES.enter) {
         window.card.tryCloseCard();
-        window.map.insertCard(noticeData);
+        window.card.insertCard(noticeData);
       }
     });
 
     return element;
   };
 
+  // отрисовка готовых пинов
+  var renderPins = function () {
+    var similarAds = window.card.createNotices();
+    var fragment = document.createDocumentFragment();
+
+    for (var i = 0; i < similarAds.length; i++) {
+      fragment.appendChild(renderPin(similarAds[i]));
+    }
+
+    window.data.mapPinsElement.appendChild(fragment);
+  };
+
   window.pin = {
-    renderPin: renderPin
+    renderPin: renderPin,
+    renderPins: renderPins
   };
 })();
