@@ -25,19 +25,6 @@
 
     SIMILAR_AD_VALUE: 8,
 
-    PIN: {
-      height: 156,
-      width: 78,
-      paddingTop: 16
-    },
-
-    MAIN_PIN: {
-      width: 65,
-      height: 80,
-      centerX: 570,
-      centerY: 375
-    },
-
     KEYCODES: {
       esc: 'Escape',
       enter: 'Enter',
@@ -49,6 +36,19 @@
       bungalow: {ru: 'Бунгало'},
       house: {ru: 'Дом'},
       palace: {ru: 'Дворец'}
+    },
+
+    PIN: {
+      height: 156,
+      width: 78,
+      paddingTop: 16
+    },
+
+    MAIN_PIN: {
+      width: 65,
+      height: 80,
+      centerX: 570,
+      centerY: 375
     },
 
     COORDINATE_LIMITER: {

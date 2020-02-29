@@ -23,7 +23,7 @@
         y: moveEvt.clientY
       };
 
-      var newTopCoordinate;
+      var newTopCoordinate = window.data.mapPinMainElement.offsetTop - shift.y;
 
       if (newTopCoordinate < window.data.COORDINATE_LIMITER.minY) {
         newTopCoordinate = window.data.COORDINATE_LIMITER.minY;
@@ -33,7 +33,7 @@
         newTopCoordinate = window.data.mapPinMainElement.offsetTop - shift.y;
       }
 
-      var newLeftCoordinate;
+      var newLeftCoordinate = window.data.mapPinMainElement.offsetLeft - shift.x;
 
       if (newLeftCoordinate < window.data.COORDINATE_LIMITER.minX) {
         newLeftCoordinate = window.data.COORDINATE_LIMITER.minX;
