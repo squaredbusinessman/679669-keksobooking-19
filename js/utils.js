@@ -67,7 +67,7 @@
   };
 
   var isLeftClickEvent = function (evt, action) {
-    if (evt.which === window.data.KEYCODES.leftclick) {
+    if (evt.buttons === window.data.KEYCODES.leftclick) {
       action();
     }
   };

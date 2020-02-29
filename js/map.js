@@ -10,6 +10,7 @@
 
     window.adForm.setAdress(true);
     window.utils.toggleDisableAttribute(window.data.adFormFields);
+    window.dragNDrop.mainPinRemoveDragEvent();
 
     window.data.mapPinMainElement.removeEventListener('mousedown', mainPinLeftMouseDownHandler);
     window.data.mapPinMainElement.removeEventListener('keydown', mainPinEnterKeyDownHandler);
@@ -18,7 +19,7 @@
     window.data.checkinElement.addEventListener('change', window.adForm.checkinChangeHandler);
     window.data.checkoutElement.addEventListener('change', window.adForm.checkoutChangeHandler);
 
-    window.dragNDrop.mainPinRemoveDragEvent();
+
     window.pin.renderPins();
   };
 
@@ -29,7 +30,7 @@
   };
 
   var mainPinLeftMouseDownHandler = function (evt) {
-    if (evt.which === window.data.KEYCODES.leftclick) {
+    if (evt.buttons === window.data.KEYCODES.leftclick) {
       activateMode();
     }
   };
