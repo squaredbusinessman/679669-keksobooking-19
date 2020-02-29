@@ -10,7 +10,7 @@
 
     window.adForm.setAdress(true);
     window.utils.toggleDisableAttribute(window.data.adFormFields);
-    window.dragNDrop.mainPinRemoveDragEvent();
+
 
     window.data.mapPinMainElement.removeEventListener('mousedown', mainPinLeftMouseDownHandler);
     window.data.mapPinMainElement.removeEventListener('keydown', mainPinEnterKeyDownHandler);
@@ -42,6 +42,7 @@
 
     window.adForm.setAdress(false);
     window.utils.toggleDisableAttribute(window.data.adFormFields);
+    window.dragNDrop.mainPinAddDragEvent();
 
     window.data.mapPinMainElement.addEventListener('mousedown', mainPinLeftMouseDownHandler);
     window.data.mapPinMainElement.addEventListener('keydown', mainPinEnterKeyDownHandler);
@@ -50,8 +51,6 @@
     window.data.housingTypeElement.removeEventListener('change', window.adForm.housingTypeChangeHandler);
     window.data.checkinElement.removeEventListener('change', window.adForm.checkinChangeHandler);
     window.data.checkoutElement.removeEventListener('change', window.adForm.checkoutChangeHandler);
-
-    window.dragNDrop.mainPinAddDragEvent();
   };
 
   window.map = {
