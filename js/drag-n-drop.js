@@ -1,17 +1,27 @@
 'use strict';
 
 (function () {
+  var updateAddressCoordinates = function (top, left) {
+    if (left === window.data.COORDINATE_LIMITER.minX) {
+      left = window.data.MAIN_PIN.width / 2;
+    }
+    var setAdress = function (address) {
+      var adressInputElement = document.querySelector('#address');
+      adressInputElement.value = address;
+    };
+
+    setAdress(Math.floor(left) + ', ' + Math.floor(top));
+  };
+
   var mainPinMouseMovesHandler = function (evt) {
+    evt.preventDefault();
     var startCoordinates = {
       x: evt.clientX,
       y: evt.clientY
     };
 
-    var isDragged = false;
-
     var mouseMoveHandler = function (moveEvt) {
       moveEvt.preventDefault();
-      isDragged = true;
 
       var shift = {
         x: startCoordinates.x - moveEvt.clientX,
@@ -29,8 +39,6 @@
         newTopCoordinate = window.data.COORDINATE_LIMITER.minY;
       } else if (newTopCoordinate > window.data.COORDINATE_LIMITER.maxY) {
         newTopCoordinate = window.data.COORDINATE_LIMITER.maxY;
-      } else {
-        newTopCoordinate = window.data.mapPinMainElement.offsetTop - shift.y;
       }
 
       var newLeftCoordinate = window.data.mapPinMainElement.offsetLeft - shift.x;
@@ -39,8 +47,6 @@
         newLeftCoordinate = window.data.COORDINATE_LIMITER.minX;
       } else if (newLeftCoordinate > (window.data.COORDINATE_LIMITER.maxX - window.data.MAIN_PIN.width)) {
         newLeftCoordinate = window.data.COORDINATE_LIMITER.maxX - window.data.MAIN_PIN.width;
-      } else {
-        newLeftCoordinate = window.data.mapPinMainElement.offsetLeft - shift.x;
       }
 
       window.data.mapPinMainElement.style.top = newTopCoordinate + 'px';
@@ -48,32 +54,11 @@
       updateAddressCoordinates(newTopCoordinate, newLeftCoordinate);
     };
 
-    var updateAddressCoordinates = function (top, left) {
-      if (left === window.data.COORDINATE_LIMITER.minX) {
-        left = window.data.MAIN_PIN.width / 2;
-      }
-      var newAdress = function (address) {
-        var adressInputElement = document.querySelector('#address');
-        adressInputElement.value = address;
-      };
-
-      newAdress(Math.floor(left) + ', ' + Math.floor(top));
-    };
-
     var mouseUpHandler = function (mouseUpEvt) {
       mouseUpEvt.preventDefault();
 
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);
-
-      if (isDragged) {
-        var preventDefaultOnClickHandler = function (isDraggedEvt) {
-          isDraggedEvt.preventDefault();
-          window.data.mapPinMainElement.removeEventListener('click', preventDefaultOnClickHandler);
-        };
-        window.data.mapPinMainElement.addEventListener('click', preventDefaultOnClickHandler);
-      }
-
     };
 
     document.addEventListener('mousemove', mouseMoveHandler);
