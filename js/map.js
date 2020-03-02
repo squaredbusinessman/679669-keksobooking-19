@@ -11,12 +11,14 @@
     window.adForm.setAdress(true);
     window.utils.toggleDisableAttribute(window.data.adFormFields);
 
+
     window.data.mapPinMainElement.removeEventListener('mousedown', mainPinLeftMouseDownHandler);
     window.data.mapPinMainElement.removeEventListener('keydown', mainPinEnterKeyDownHandler);
     window.data.roomNumberElement.addEventListener('change', window.adForm.roomGuestChangeHandler);
     window.data.housingTypeElement.addEventListener('change', window.adForm.housingTypeChangeHandler);
     window.data.checkinElement.addEventListener('change', window.adForm.checkinChangeHandler);
     window.data.checkoutElement.addEventListener('change', window.adForm.checkoutChangeHandler);
+
 
     window.pin.renderPins();
   };
@@ -28,7 +30,7 @@
   };
 
   var mainPinLeftMouseDownHandler = function (evt) {
-    if (evt.which === window.data.KEYCODES.leftclick) {
+    if (evt.buttons === window.data.KEYCODES.leftclick) {
       activateMode();
     }
   };
@@ -40,6 +42,7 @@
 
     window.adForm.setAdress(false);
     window.utils.toggleDisableAttribute(window.data.adFormFields);
+    window.dragNDrop.mainPinAddDragEvent();
 
     window.data.mapPinMainElement.addEventListener('mousedown', mainPinLeftMouseDownHandler);
     window.data.mapPinMainElement.addEventListener('keydown', mainPinEnterKeyDownHandler);
