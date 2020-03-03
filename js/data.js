@@ -13,6 +13,12 @@
   var checkinElement = adFormElement.querySelector('#timein');
   var checkoutElement = adFormElement.querySelector('#timeout');
 
+  var dataRequest = function () {
+    window.server.load(window.data.SERVER.LOAD_URL);
+  };
+
+  dataRequest();
+
   window.data = {
     AD_MOCKS: {
       userPicNum: ['1', '2', '3', '4', '5', '6', '7', '8'],
@@ -56,6 +62,12 @@
       maxX: 1200,
       minY: 130,
       maxY: 600
+    },
+
+    SERVER: {
+      LOAD_URL: 'https://js.dump.academy/keksobooking/data',
+      UPLOAD_URL: 'https://js.dump.academy/keksobooking',
+      TIMEOUT: 10000
     },
 
     mapBlockElement: mapBlockElement,

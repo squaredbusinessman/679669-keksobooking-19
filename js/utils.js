@@ -72,6 +72,10 @@
     }
   };
 
+  var isUndefined = function (element) {
+    return typeof element === 'undefined';
+  };
+
   window.utils = {
     getRandomInt: getRandomInt,
     getRandomProp: getRandomProp,
@@ -81,6 +85,7 @@
     toggleDisableAttribute: toggleDisableAttribute,
     isEscEvent: isEscEvent,
     isEnterEvent: isEnterEvent,
-    isLeftClickEvent: isLeftClickEvent
+    isLeftClickEvent: isLeftClickEvent,
+    isUndefined: isUndefined
   };
 })();
