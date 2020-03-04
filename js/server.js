@@ -35,12 +35,10 @@
 
     xhr.addEventListener('error', function () {
       errorHandler(MESSAGES.CONNECTION_FAILED);
-      window.map.deactivateMode();
     });
 
     xhr.addEventListener('timeout', function () {
       errorHandler(MESSAGES.REQUEST_FAILED + xhr.timeout + MESSAGES.MS);
-      window.map.deactivateMode();
     });
 
     xhr.open('GET', SERVER.LOAD_URL);

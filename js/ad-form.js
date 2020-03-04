@@ -2,13 +2,17 @@
 
 (function () {
   // функция установки адресса в инпут
-  var setAddress = function (isActive) {
+  var setAddress = function (isActive, newMainPinState) {
     var inputAddress = window.data.adFormElement.querySelector('input[name="address"]');
 
     var mainPinState = {
       top: parseInt(window.data.mapPinMainElement.style.top, 10) + Math.ceil(window.data.mapPinMainElement.style.height / 2),
       left: parseInt(window.data.mapPinMainElement.style.left, 10) + Math.ceil(window.data.mapPinMainElement.style.width / 2)
     };
+
+    if (newMainPinState) {
+      mainPinState = newMainPinState;
+    }
 
     if (isActive) {
       mainPinState.top += Math.round(window.data.mapPinMainElement.clientHeight / 2 + window.data.PIN.paddingTop);

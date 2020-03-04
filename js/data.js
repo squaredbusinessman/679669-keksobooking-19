@@ -33,7 +33,7 @@
 
     HOUSING_TYPES: {
       flat: {ru: 'Квартира'},
-      bungalow: {ru: 'Бунгало'},
+      bungalo: {ru: 'Бунгало'},
       house: {ru: 'Дом'},
       palace: {ru: 'Дворец'}
     },

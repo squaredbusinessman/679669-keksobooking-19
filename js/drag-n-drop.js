@@ -49,9 +49,10 @@
         newLeftCoordinate = window.data.COORDINATE_LIMITER.maxX - window.data.MAIN_PIN.width;
       }
 
-      window.data.mapPinMainElement.style.top = newTopCoordinate + 'px';
-      window.data.mapPinMainElement.style.left = newLeftCoordinate + 'px';
-      updateAddressCoordinates(newTopCoordinate, newLeftCoordinate);
+      window.adForm.setAdress(true, {
+        top: newTopCoordinate,
+        left: newLeftCoordinate
+      });
     };
 
     var mouseUpHandler = function (mouseUpEvt) {
