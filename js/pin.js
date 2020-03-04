@@ -13,7 +13,7 @@
 
     // обработчик событий отрисовки карточки при клике или кейдауне на пин
     element.addEventListener('mousedown', function (evt) {
-      if (evt.buttons === window.data.KEYCODES.leftclick) {
+      if (evt.buttons === window.data.KEYCODES.leftClick) {
         window.card.tryCloseCard();
         window.card.insertCard(noticeData);
       }
@@ -30,12 +30,15 @@
   };
 
   // отрисовка готовых пинов
-  var renderPins = function () {
-    var similarAds = window.card.createNotices();
+  var renderPins = function (data) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < similarAds.length; i++) {
-      fragment.appendChild(renderPin(similarAds[i]));
+    var newData = data.filter(function (item) {
+      return item.offer;
+    }).slice(0, 5);
+
+    for (var i = 0; i < newData.length; i++) {
+      fragment.appendChild(renderPin(newData[i]));
     }
 
     window.data.mapPinsElement.appendChild(fragment);

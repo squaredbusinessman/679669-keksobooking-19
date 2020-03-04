@@ -118,7 +118,7 @@
   };
 
   var popupCloseLeftMouseDownHandler = function (evt) {
-    if (evt.buttons === window.data.KEYCODES.leftclick) {
+    if (evt.buttons === window.data.KEYCODES.leftClick) {
       tryCloseCard();
     }
   };

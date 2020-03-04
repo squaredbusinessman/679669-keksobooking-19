@@ -67,9 +67,21 @@
   };
 
   var isLeftClickEvent = function (evt, action) {
-    if (evt.buttons === window.data.KEYCODES.leftclick) {
+    if (evt.buttons === window.data.KEYCODES.leftClick) {
       action();
     }
+  };
+
+  var isUndefined = function (element) {
+    return typeof element === 'undefined';
+  };
+
+  var isKeyExistInObject = function (obj, objKey) {
+    return (objKey in obj);
+  };
+
+  var isValueExistInArray = function (array, arrayValue) {
+    return array.includes(arrayValue);
   };
 
   window.utils = {
@@ -81,6 +93,9 @@
     toggleDisableAttribute: toggleDisableAttribute,
     isEscEvent: isEscEvent,
     isEnterEvent: isEnterEvent,
-    isLeftClickEvent: isLeftClickEvent
+    isLeftClickEvent: isLeftClickEvent,
+    isUndefined: isUndefined,
+    isKeyExistInObject: isKeyExistInObject,
+    isValueExistInArray: isValueExistInArray
   };
 })();

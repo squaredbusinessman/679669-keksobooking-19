@@ -28,12 +28,12 @@
     KEYCODES: {
       esc: 'Escape',
       enter: 'Enter',
-      leftclick: 1
+      leftClick: 1
     },
 
     HOUSING_TYPES: {
       flat: {ru: 'Квартира'},
-      bungalow: {ru: 'Бунгало'},
+      bungalo: {ru: 'Бунгало'},
       house: {ru: 'Дом'},
       palace: {ru: 'Дворец'}
     },
