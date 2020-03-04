@@ -32,17 +32,13 @@
   // отрисовка готовых пинов
   var renderPins = function (data) {
     var fragment = document.createDocumentFragment();
-    var filteringOffers = function (offers) {
-      return offers.filter(function (item) {
-        return item.offer;
-      });
-    };
 
-    var newData = filteringOffers(data);
-    var finishData = newData.slice(0, 5);
+    var newData = data.filter(function (item) {
+      return item.offer;
+    }).slice(0, 5);
 
-    for (var i = 0; i < finishData.length; i++) {
-      fragment.appendChild(renderPin(finishData[i]));
+    for (var i = 0; i < newData.length; i++) {
+      fragment.appendChild(renderPin(newData[i]));
     }
 
     window.data.mapPinsElement.appendChild(fragment);
