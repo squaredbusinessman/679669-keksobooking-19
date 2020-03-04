@@ -30,12 +30,19 @@
   };
 
   // отрисовка готовых пинов
-  var renderPins = function () {
-    var similarAds = window.card.createNotices();
+  var renderPins = function (data) {
     var fragment = document.createDocumentFragment();
+    var filteringOffers = function (offers) {
+      return offers.filter(function (item) {
+        return item.offer;
+      });
+    };
 
-    for (var i = 0; i < similarAds.length; i++) {
-      fragment.appendChild(renderPin(similarAds[i]));
+    var newData = filteringOffers(data);
+    var finishData = newData.slice(0, 5);
+
+    for (var i = 0; i < finishData.length; i++) {
+      fragment.appendChild(renderPin(finishData[i]));
     }
 
     window.data.mapPinsElement.appendChild(fragment);

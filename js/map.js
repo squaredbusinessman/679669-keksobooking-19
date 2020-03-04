@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-
-
   // Активное состояние.
   var activateMode = function () {
     window.data.mapBlockElement.classList.remove('map--faded');
@@ -19,8 +17,7 @@
     window.data.checkinElement.addEventListener('change', window.adForm.checkinChangeHandler);
     window.data.checkoutElement.addEventListener('change', window.adForm.checkoutChangeHandler);
 
-
-    window.pin.renderPins();
+    window.server.load(window.pin.renderPins, window.messages.errorHandler);
   };
 
   var mainPinEnterKeyDownHandler = function (evt) {

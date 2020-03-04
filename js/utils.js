@@ -76,6 +76,14 @@
     return typeof element === 'undefined';
   };
 
+  var isKeyExistInObject = function (obj, objKey) {
+    return (objKey in obj);
+  };
+
+  var isValueExistInArray = function (array, arrayValue) {
+    return array.includes(arrayValue);
+  };
+
   window.utils = {
     getRandomInt: getRandomInt,
     getRandomProp: getRandomProp,
@@ -86,6 +94,8 @@
     isEscEvent: isEscEvent,
     isEnterEvent: isEnterEvent,
     isLeftClickEvent: isLeftClickEvent,
-    isUndefined: isUndefined
+    isUndefined: isUndefined,
+    isKeyExistInObject: isKeyExistInObject,
+    isValueExistInArray: isValueExistInArray
   };
 })();
