@@ -13,7 +13,7 @@
 
     // обработчик событий отрисовки карточки при клике или кейдауне на пин
     element.addEventListener('mousedown', function (evt) {
-      if (evt.buttons === window.data.KEYCODES.leftclick) {
+      if (evt.buttons === window.data.KEYCODES.leftClick) {
         window.card.tryCloseCard();
         window.card.insertCard(noticeData);
       }

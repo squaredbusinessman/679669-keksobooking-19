@@ -28,7 +28,7 @@
     KEYCODES: {
       esc: 'Escape',
       enter: 'Enter',
-      leftclick: 1
+      leftClick: 1
     },
 
     HOUSING_TYPES: {

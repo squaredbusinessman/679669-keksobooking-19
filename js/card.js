@@ -6,7 +6,7 @@
     var cardTemplate = document.querySelector('#card').content;
     var cardElement = cardTemplate.cloneNode(true);
     var popupCloseElement = cardElement.querySelector('.popup__close');
-debugger
+
     cardElement.querySelector('.popup__title').textContent = NoticeData.offer.title;
     cardElement.querySelector('.popup__text--address').textContent = NoticeData.offer.address;
     cardElement.querySelector('.popup__text--price').textContent = NoticeData.offer.price + '₽/ночь';
@@ -118,7 +118,7 @@ debugger
   };
 
   var popupCloseLeftMouseDownHandler = function (evt) {
-    if (evt.buttons === window.data.KEYCODES.leftclick) {
+    if (evt.buttons === window.data.KEYCODES.leftClick) {
       tryCloseCard();
     }
   };

@@ -1,20 +1,9 @@
 'use strict';
 
 (function () {
-  var updateAddressCoordinates = function (top, left) {
-    if (left === window.data.COORDINATE_LIMITER.minX) {
-      left = window.data.MAIN_PIN.width / 2;
-    }
-    var setAdress = function (address) {
-      var adressInputElement = document.querySelector('#address');
-      adressInputElement.value = address;
-    };
-
-    setAdress(Math.floor(left) + ', ' + Math.floor(top));
-  };
-
   var mainPinMouseMovesHandler = function (evt) {
     evt.preventDefault();
+
     var startCoordinates = {
       x: evt.clientX,
       y: evt.clientY
