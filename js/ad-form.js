@@ -65,11 +65,27 @@
     window.data.roomNumberElement.setCustomValidity(error);
   };
 
+  // дополнительные действия при удачной отправке формы
+  var resetFormHandler = function () {
+    window.data.adFormElement.reset();
+    window.pin.removeCards();
+    window.pin.renderPins();
+  };
+
+  // отправка формы
+  var dataSendFormHandler = function (evt) {
+    evt.preventDefault();
+    window.server.upload(new FormData(window.data.adFormElement, window.messages.successHandler, window.messages.errorHandler));
+  };
+
+
   window.adForm = {
-    setAdress: setAddress,
+    setAddress: setAddress,
     housingTypeChangeHandler: housingTypeChangeHandler,
     checkinChangeHandler: checkinChangeHandler,
     checkoutChangeHandler: checkoutChangeHandler,
-    roomGuestChangeHandler: roomGuestChangeHandler
+    roomGuestChangeHandler: roomGuestChangeHandler,
+    dataSendFormHandler: dataSendFormHandler,
+    resetFormHandler: resetFormHandler
   };
 })();

@@ -38,7 +38,7 @@
         newLeftCoordinate = window.data.COORDINATE_LIMITER.maxX - window.data.MAIN_PIN.width;
       }
 
-      window.adForm.setAdress(true, {
+      window.adForm.setAddress(true, {
         top: newTopCoordinate,
         left: newLeftCoordinate
       });
