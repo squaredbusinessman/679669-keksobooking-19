@@ -53,8 +53,8 @@
 
     xhr.addEventListener('load', function () {
       if (xhr.status === statusCode.SUCCESS) {
-        successHandler(xhr.response);
-        successHandler(MESSAGES.SUCCESS);
+        window.messages.successHandler(xhr.response);
+        window.messages.successHandler(MESSAGES.SUCCESS);
       } else {
         errorHandler(MESSAGES.STATUS + xhr.status + ' ' + xhr.statusText);
       }
