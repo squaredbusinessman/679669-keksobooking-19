@@ -76,6 +76,7 @@
   var dataSendFormHandler = function (evt) {
     evt.preventDefault();
     window.server.upload(new FormData(window.data.adFormElement, window.messages.successHandler, window.messages.errorHandler));
+    window.map.deactivateMode();
   };
 
 

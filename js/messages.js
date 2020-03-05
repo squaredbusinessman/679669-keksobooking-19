@@ -31,8 +31,9 @@
     mainElement.insertBefore(successElement, mainElement.firstChild);
     document.addEventListener('keydown', popupCloseEscKeydownHandler);
     successElement.addEventListener('click', popupCloseLeftMouseClickHandler);
-
-    window.map.deactivateMode();
+    window.adForm.resetFormHandler();
+    window.pin.removeCards();
+    window.pin.removePins();
   };
 
   // обработчики закрытия ошибок
