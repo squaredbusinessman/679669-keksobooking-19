@@ -29,6 +29,25 @@
     return element;
   };
 
+  // убираем карточки при отправке формы
+  var removeCards = function () {
+    var card = document.querySelectorAll('.map__card');
+
+    card.forEach(function (cardPopup) {
+      cardPopup.remove();
+    });
+  };
+
+  // убираем пины при отправке формы
+  var removePins = function () {
+    var pins = document.querySelectorAll('.map__pin');
+    pins.forEach(function (pin) {
+      if (!pin.classList.contains('map__pin--main')) {
+        pin.remove();
+      }
+    });
+  };
+
   // отрисовка готовых пинов
   var renderPins = function (data) {
     var fragment = document.createDocumentFragment();
@@ -46,6 +65,8 @@
 
   window.pin = {
     renderPin: renderPin,
-    renderPins: renderPins
+    renderPins: renderPins,
+    removeCards: removeCards,
+    removePins: removePins
   };
 })();

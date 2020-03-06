@@ -38,7 +38,9 @@
         newLeftCoordinate = window.data.COORDINATE_LIMITER.maxX - window.data.MAIN_PIN.width;
       }
 
-      window.adForm.setAdress(true, {
+      window.data.mapPinMainElement.style.top = newTopCoordinate + 'px';
+      window.data.mapPinMainElement.style.left = newLeftCoordinate + 'px';
+      window.adForm.setAddress(true, {
         top: newTopCoordinate,
         left: newLeftCoordinate
       });

@@ -56,6 +56,11 @@
 
   window.messages = {
     errorHandler: errorHandler,
-    successHandler: successHandler
+    successHandler: successHandler,
+    CONNECTION_FAILED: 'Произошла ошибка соединения! Пожалуйста, проверьте ваше подключение к интернету',
+    REQUEST_FAILED: 'Запрос не успел выполниться за ',
+    STATUS: 'Статус ответа: ',
+    SUCCESS: 'Форма успешно отправлена!',
+    MS: 'мс'
   };
 })();

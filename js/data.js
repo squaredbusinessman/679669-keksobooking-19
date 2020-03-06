@@ -3,6 +3,7 @@
 (function () {
   var mapBlockElement = document.querySelector('.map');
   var adFormElement = document.querySelector('.ad-form');
+  var resetButtonElement = adFormElement.querySelector('.ad-form__reset');
   var adFormFields = adFormElement.querySelectorAll('fieldset, select, input');
   var mapPinMainElement = document.querySelector('.map__pin--main');
   var mapPinsElement = mapBlockElement.querySelector('.map__pins');
@@ -60,6 +61,7 @@
 
     mapBlockElement: mapBlockElement,
     adFormElement: adFormElement,
+    resetButtonElement: resetButtonElement,
     adFormFields: adFormFields,
     mapPinMainElement: mapPinMainElement,
     mapPinsElement: mapPinsElement,
