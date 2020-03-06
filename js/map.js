@@ -18,7 +18,7 @@
     window.data.checkinElement.addEventListener('change', window.adForm.checkinChangeHandler);
     window.data.checkoutElement.addEventListener('change', window.adForm.checkoutChangeHandler);
     window.data.adFormElement.addEventListener('submit', window.adForm.dataSendFormHandler);
-    window.data.resetButtonElement.addEventListener('click', resetButtonLeftClickHandler);
+    window.data.resetButtonElement.addEventListener('click', window.adForm.resetButtonLeftClickHandler);
 
     window.server.load(window.pin.renderPins, window.messages.errorHandler);
   };
@@ -32,13 +32,6 @@
   var mainPinLeftMouseDownHandler = function (evt) {
     if (evt.buttons === window.data.KEYCODES.leftClick) {
       activateMode();
-    }
-  };
-
-  // сброс формы
-  var resetButtonLeftClickHandler = function (evt) {
-    if (evt.buttons === window.data.KEYCODES.leftClick) {
-      window.adForm.resetFormHandler();
     }
   };
 
@@ -59,7 +52,7 @@
     window.data.checkinElement.removeEventListener('change', window.adForm.checkinChangeHandler);
     window.data.checkoutElement.removeEventListener('change', window.adForm.checkoutChangeHandler);
     window.data.adFormElement.removeEventListener('submit', window.adForm.dataSendFormHandler);
-    window.data.resetButtonElement.removeEventListener('click', resetButtonLeftClickHandler);
+    window.data.resetButtonElement.removeEventListener('click', window.adForm.resetButtonLeftClickHandler);
   };
 
   window.map = {

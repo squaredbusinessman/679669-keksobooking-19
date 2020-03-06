@@ -7,17 +7,9 @@
     TIMEOUT: 10000
   };
 
-  var MESSAGES = {
-    CONNECTION_FAILED: 'Произошла ошибка соединения! Пожалуйста, проверьте ваше подключение к интернету',
-    REQUEST_FAILED: 'Запрос не успел выполниться за ',
-    STATUS: 'Статус ответа: ',
-    SUCCESS: 'Форма успешно отправлена!',
-    MS: 'мс'
-  };
   var statusCode = {
     SUCCESS: 200
   };
-
 
   // загрузка с сервера
   var load = function (successHandler, errorHandler) {
@@ -29,16 +21,16 @@
       if (xhr.status === statusCode.SUCCESS) {
         successHandler(xhr.response);
       } else {
-        errorHandler(MESSAGES.STATUS + xhr.status + ' ' + xhr.statusText);
+        errorHandler(window.messages.STATUS + xhr.status + ' ' + xhr.statusText);
       }
     });
 
     xhr.addEventListener('error', function () {
-      errorHandler(MESSAGES.CONNECTION_FAILED);
+      errorHandler(window.messages.CONNECTION_FAILED);
     });
 
     xhr.addEventListener('timeout', function () {
-      errorHandler(MESSAGES.REQUEST_FAILED + xhr.timeout + MESSAGES.MS);
+      errorHandler(window.messages.REQUEST_FAILED + xhr.timeout + window.messages.MS);
     });
 
     xhr.open('GET', SERVER.LOAD_URL);
@@ -53,19 +45,18 @@
 
     xhr.addEventListener('load', function () {
       if (xhr.status === statusCode.SUCCESS) {
-        window.messages.successHandler(xhr.response);
-        window.messages.successHandler(MESSAGES.SUCCESS);
+        successHandler(xhr.response);
       } else {
-        errorHandler(MESSAGES.STATUS + xhr.status + ' ' + xhr.statusText);
+        errorHandler(window.messages.STATUS + xhr.status + ' ' + xhr.statusText);
       }
     });
 
     xhr.addEventListener('error', function () {
-      errorHandler(MESSAGES.CONNECTION_FAILED);
+      errorHandler(window.messages.CONNECTION_FAILED);
     });
 
     xhr.addEventListener('timeout', function () {
-      errorHandler(MESSAGES.REQUEST_FAILED + xhr.timeout + MESSAGES.MS);
+      errorHandler(window.messages.REQUEST_FAILED + xhr.timeout + window.messages.MS);
     });
 
     xhr.open('POST', SERVER.UPLOAD_URL);

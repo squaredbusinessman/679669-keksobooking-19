@@ -69,16 +69,36 @@
   var resetFormHandler = function () {
     window.data.adFormElement.reset();
     window.pin.removeCards();
-    window.pin.renderPins();
+    window.pin.removePins();
+  };
+
+  // УСПЕХ отправки
+  var successUpload = function () {
+    window.messages.successHandler(window.messages.SUCCESS);
+    resetFormHandler();
+    window.map.deactivateMode();
+  };
+
+  // ПРОВАЛ отправки
+  var errorUpload = function () {
+    window.messages.errorHandler();
+    window.map.deactivateMode();
   };
 
   // отправка формы
   var dataSendFormHandler = function (evt) {
     evt.preventDefault();
-    window.server.upload(new FormData(window.data.adFormElement, window.messages.successHandler, window.messages.errorHandler));
-    window.map.deactivateMode();
+
+    window.server.upload(new FormData(window.data.adFormElement), successUpload(), errorUpload());
   };
 
+  // сброс формы
+  var resetButtonLeftClickHandler = function (evt) {
+    if (evt.buttons === window.data.KEYCODES.leftClick) {
+      resetFormHandler();
+      window.map.deactivateMode();
+    }
+  };
 
   window.adForm = {
     setAddress: setAddress,
@@ -87,6 +107,7 @@
     checkoutChangeHandler: checkoutChangeHandler,
     roomGuestChangeHandler: roomGuestChangeHandler,
     dataSendFormHandler: dataSendFormHandler,
-    resetFormHandler: resetFormHandler
+    resetFormHandler: resetFormHandler,
+    resetButtonLeftClickHandler: resetButtonLeftClickHandler
   };
 })();
