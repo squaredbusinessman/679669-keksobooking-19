@@ -19,6 +19,7 @@
     window.data.checkoutElement.addEventListener('change', window.adForm.checkoutChangeHandler);
     window.data.adFormElement.addEventListener('submit', window.adForm.dataSendFormHandler);
     window.data.resetButtonElement.addEventListener('click', window.adForm.resetButtonLeftClickHandler);
+    window.data.formFilters.addEventListener('change', window.filter.formFiltersChangeHandler);
 
     window.server.load(window.pin.renderPins, window.messages.errorHandler);
   };
@@ -53,6 +54,7 @@
     window.data.checkoutElement.removeEventListener('change', window.adForm.checkoutChangeHandler);
     window.data.adFormElement.removeEventListener('submit', window.adForm.dataSendFormHandler);
     window.data.resetButtonElement.removeEventListener('click', window.adForm.resetButtonLeftClickHandler);
+    window.data.formFilters.removeEventListener('change', window.filter.formFiltersChangeHandler);
   };
 
   window.map = {

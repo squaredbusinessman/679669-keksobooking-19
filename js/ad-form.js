@@ -68,8 +68,9 @@
   // дополнительные действия при удачной отправке формы
   var resetFormHandler = function () {
     window.data.adFormElement.reset();
-    window.pin.removeCards();
+    window.card.remove();
     window.pin.removePins();
+    window.filter.reset();
   };
 
   // УСПЕХ отправки
@@ -94,6 +95,7 @@
 
   // сброс формы
   var resetButtonLeftClickHandler = function (evt) {
+    evt.preventDefault();
     if (evt.buttons === window.data.KEYCODES.leftClick) {
       resetFormHandler();
       window.map.deactivateMode();

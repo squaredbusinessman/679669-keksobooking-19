@@ -29,15 +29,6 @@
     return element;
   };
 
-  // убираем карточки при отправке формы
-  var removeCards = function () {
-    var card = document.querySelectorAll('.map__card');
-
-    card.forEach(function (cardPopup) {
-      cardPopup.remove();
-    });
-  };
-
   // убираем пины при отправке формы
   var removePins = function () {
     var pins = document.querySelectorAll('.map__pin');
@@ -66,7 +57,6 @@
   window.pin = {
     renderPin: renderPin,
     renderPins: renderPins,
-    removeCards: removeCards,
     removePins: removePins
   };
 })();

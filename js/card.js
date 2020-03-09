@@ -135,10 +135,20 @@
     }
   };
 
+  // убираем карточки при отправке формы
+  var removeCards = function () {
+    var card = document.querySelectorAll('.map__card');
+
+    card.forEach(function (cardPopup) {
+      cardPopup.remove();
+    });
+  };
+
   window.card = {
     insertCard: insertCard,
     renderCard: renderCard,
     tryCloseCard: tryCloseCard,
-    createNotices: createNotices
+    createNotices: createNotices,
+    remove: removeCards
   };
 })();

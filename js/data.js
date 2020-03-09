@@ -13,6 +13,7 @@
   var guestSelectElement = adFormElement.querySelector('#capacity');
   var checkinElement = adFormElement.querySelector('#timein');
   var checkoutElement = adFormElement.querySelector('#timeout');
+  var formFilters = document.querySelector('.map__filters');
 
   window.data = {
     AD_MOCKS: {
@@ -70,6 +71,7 @@
     roomNumberElement: roomNumberElement,
     guestSelectElement: guestSelectElement,
     checkinElement: checkinElement,
-    checkoutElement: checkoutElement
+    checkoutElement: checkoutElement,
+    formFilters: formFilters
   };
 })();
