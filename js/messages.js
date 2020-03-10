@@ -6,7 +6,7 @@
   var successElement;
 
   // функция-обработчик сообщения об ошибке
-  var errorHandler = function (errorMessage) {
+  var showError = function (errorMessage) {
     var errorTemplateElement = document.querySelector('#error').content.querySelector('div.error');
     errorElement = errorTemplateElement.cloneNode(true);
     var errorMessageElement = errorElement.querySelector('.error__message');
@@ -20,7 +20,7 @@
   };
 
   // функция-обработчик сообщения об успехе операции
-  var successHandler = function (successMessage) {
+  var showSuccess = function (successMessage) {
     var successTemplateElement = document.querySelector('#success').content.querySelector('div.success');
     successElement = successTemplateElement.cloneNode(true);
     var successMessageElement = successElement.querySelector('.success__message');
@@ -55,8 +55,8 @@
   };
 
   window.messages = {
-    errorHandler: errorHandler,
-    successHandler: successHandler,
+    showError: showError,
+    showSuccess: showSuccess,
     CONNECTION_FAILED: 'Произошла ошибка соединения! Пожалуйста, проверьте ваше подключение к интернету',
     REQUEST_FAILED: 'Запрос не успел выполниться за ',
     STATUS: 'Статус ответа: ',

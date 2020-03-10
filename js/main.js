@@ -1,5 +1,5 @@
 'use strict';
 
 (function () {
-  window.map.deactivateMode();
+  window.map.deactivate();
 })();

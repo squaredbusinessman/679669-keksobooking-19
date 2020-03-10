@@ -18,10 +18,13 @@
     window.data.checkinElement.addEventListener('change', window.adForm.checkinChangeHandler);
     window.data.checkoutElement.addEventListener('change', window.adForm.checkoutChangeHandler);
     window.data.adFormElement.addEventListener('submit', window.adForm.dataSendFormHandler);
-    window.data.resetButtonElement.addEventListener('click', window.adForm.resetButtonLeftClickHandler);
-    window.data.formFilters.addEventListener('change', window.filter.formFiltersChangeHandler);
+    window.data.resetButtonElement.addEventListener('click', window.adForm.resetButtonClickHandler);
+    window.data.formFiltersElement.addEventListener('change', window.filter.formFiltersChangeHandler);
 
-    window.server.load(window.pin.renderPins, window.messages.errorHandler);
+    window.server.load(function (data) {
+      window.data.cache = data;
+      window.pin.render(data);
+    }, window.messages.showError);
   };
 
   var mainPinEnterKeyDownHandler = function (evt) {
@@ -43,7 +46,8 @@
 
     window.adForm.setAddress(false);
     window.utils.toggleDisableAttribute(window.data.adFormFields);
-    window.dragNDrop.mainPinAddDragEvent();
+    window.dragNDrop.add();
+    window.pin.setDefaultCoordinates();
 
     window.data.mapPinMainElement.addEventListener('mousedown', mainPinLeftMouseDownHandler);
     window.data.mapPinMainElement.addEventListener('keydown', mainPinEnterKeyDownHandler);
@@ -53,11 +57,11 @@
     window.data.checkinElement.removeEventListener('change', window.adForm.checkinChangeHandler);
     window.data.checkoutElement.removeEventListener('change', window.adForm.checkoutChangeHandler);
     window.data.adFormElement.removeEventListener('submit', window.adForm.dataSendFormHandler);
-    window.data.resetButtonElement.removeEventListener('click', window.adForm.resetButtonLeftClickHandler);
-    window.data.formFilters.removeEventListener('change', window.filter.formFiltersChangeHandler);
+    window.data.resetButtonElement.removeEventListener('click', window.adForm.resetButtonClickHandler);
+    window.data.formFiltersElement.removeEventListener('change', window.filter.formFiltersChangeHandler);
   };
 
   window.map = {
-    deactivateMode: deactivateMode
+    deactivate: deactivateMode
   };
 })();

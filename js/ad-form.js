@@ -50,7 +50,7 @@
   };
 
 
-  // 1-1 2-2 or 1 3 - 3 or 2 or 1 100 - none
+  // валидация комнат-гостей
   var roomGuestChangeHandler = function () {
     var rooms = window.data.roomNumberElement.value;
     var guests = window.data.guestSelectElement.value;
@@ -65,41 +65,57 @@
     window.data.roomNumberElement.setCustomValidity(error);
   };
 
+  // вариант с отключением инпутов( написан сложно, частично не понятен, но работает)
+  // var ROOMS_CAPACITY = {
+  //   '1': ['1'],
+  //   '2': ['2', '1'],
+  //   '3': ['3', '2', '1'],
+  //   '100': ['0']
+  // };
+  // var roomGuestChangeHandler = function () {
+  //   if (window.data.guestSelectElement.options.length > 0) {
+  //     [].forEach.call(window.data.guestSelectElement.options, function (item) {
+  //       item.selected = (ROOMS_CAPACITY[window.data.roomNumberElement.value][0] === item.value) ? true : false;
+  //       item.hidden = (ROOMS_CAPACITY[window.data.roomNumberElement.value].indexOf(item.value) < 0) ? false : true;
+  //     });
+  //   }
+  // };
+
   // дополнительные действия при удачной отправке формы
   var resetFormHandler = function () {
     window.data.adFormElement.reset();
     window.card.remove();
-    window.pin.removePins();
+    window.pin.remove();
     window.filter.reset();
   };
 
   // УСПЕХ отправки
   var successUpload = function () {
-    window.messages.successHandler(window.messages.SUCCESS);
+    window.messages.showSuccess(window.messages.SUCCESS);
     resetFormHandler();
-    window.map.deactivateMode();
+    window.map.deactivate();
   };
 
   // ПРОВАЛ отправки
   var errorUpload = function () {
-    window.messages.errorHandler();
-    window.map.deactivateMode();
+    window.messages.showError();
+    resetFormHandler();
+    window.map.deactivate();
   };
 
   // отправка формы
   var dataSendFormHandler = function (evt) {
     evt.preventDefault();
-
-    window.server.upload(new FormData(window.data.adFormElement), successUpload(), errorUpload());
+    debugger
+    window.server.upload(new FormData(window.data.adFormElement), successUpload, errorUpload);
   };
 
   // сброс формы
-  var resetButtonLeftClickHandler = function (evt) {
+  var resetButtonClickHandler = function (evt) {
     evt.preventDefault();
-    if (evt.buttons === window.data.KEYCODES.leftClick) {
-      resetFormHandler();
-      window.map.deactivateMode();
-    }
+    resetFormHandler();
+
+    window.map.deactivate();
   };
 
   window.adForm = {
@@ -110,6 +126,6 @@
     roomGuestChangeHandler: roomGuestChangeHandler,
     dataSendFormHandler: dataSendFormHandler,
     resetFormHandler: resetFormHandler,
-    resetButtonLeftClickHandler: resetButtonLeftClickHandler
+    resetButtonClickHandler: resetButtonClickHandler
   };
 })();

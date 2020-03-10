@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var formFilters = document.querySelector('.map__filters');
   var priceMap = {
     'low': {
       start: 0,
@@ -50,15 +49,16 @@
   };
 
   var resetFilter = function () {
-    formFilters.reset();
+    window.data.formFiltersElement.reset();
   };
 
   var formFiltersChangeHandler = function () {
     var filterElements = [];
-    filterElements = Array.from(formFilters.children);
+    filterElements = Array.from(window.data.formFiltersElement.children);
     window.card.remove();
-    window.pin.renderPins(getFilterData(window.server.load(window.pin.renderPins, window.messages.errorHandler), filterElements));
-    // вот тут я чтото затупил, как нам полученную с сервера дату отправить параметром в функцию getFilterData?
+    window.pin.remove();
+    var filteredData = getFilterData(window.data.cache, filterElements);
+    window.pin.render(filteredData);
   };
 
   window.filter = {

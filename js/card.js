@@ -41,37 +41,6 @@
       cardElement.remove();
     }
   };
-  // Функция создания массива из 8 сгенерированных объектов
-  var createNotices = function () {
-    var similarAds = [];
-
-    for (var i = 0; i < window.data.SIMILAR_AD_VALUE; i++) {
-      similarAds.push({
-        author: {
-          avatar: 'img/avatars/user' + ('0' + window.data.AD_MOCKS.userPicNum[window.utils.getRandomInt(0, window.data.AD_MOCKS.userPicNum.length - 1)]) + '.png'
-        },
-        offer: {
-          title: window.utils.getRandomProp(window.data.AD_MOCKS.adTitle),
-          address: window.utils.getRandomInt(0, 1000) + ',' + window.utils.getRandomInt(0, 1000),
-          price: window.utils.getRandomInt(4000, 50000),
-          type: window.utils.getRandomProp(window.data.AD_MOCKS.homeType),
-          rooms: window.utils.getRandomInt(1, 3),
-          guests: window.utils.getRandomInt(1, 10),
-          checkin: window.utils.getRandomProp(window.data.AD_MOCKS.departureTime),
-          checkout: window.utils.getRandomProp(window.data.AD_MOCKS.departureTime),
-          features: window.utils.shuffleArr(window.data.AD_MOCKS.features).slice(0, window.utils.getRandomInt(1, window.data.AD_MOCKS.features.length)),
-          description: 'Самое уютное, и комфортное место в этой солнечной системе!',
-          photos: window.utils.shuffleArr(window.data.AD_MOCKS.adPhoto).slice(0, window.utils.getRandomInt(1, window.data.AD_MOCKS.adPhoto.length))
-        },
-        location: {
-          x: window.utils.getRandomInt(1, window.data.mapBlockElement.offsetWidth - 1),
-          y: window.utils.getRandomInt(250, 630)
-        }
-      });
-    }
-
-    return similarAds;
-  };
 
   var renderPhotos = function (cardElement, photos) {
     var photoElement = cardElement.querySelector('.popup__photos');
@@ -114,7 +83,7 @@
   var insertCard = function (dataCard) {
     var mapFiltersContainer = document.querySelector('.map__filters-container');
 
-    window.data.mapBlockElement.insertBefore(window.card.renderCard(dataCard), mapFiltersContainer);
+    window.data.mapBlockElement.insertBefore(window.card.render(dataCard), mapFiltersContainer);
   };
 
   var popupCloseLeftMouseDownHandler = function (evt) {
@@ -136,19 +105,18 @@
   };
 
   // убираем карточки при отправке формы
-  var removeCards = function () {
-    var card = document.querySelectorAll('.map__card');
+  var removeCard = function () {
+    var card = document.querySelector('.map__card');
 
-    card.forEach(function (cardPopup) {
-      cardPopup.remove();
-    });
+    if (card) {
+      card.remove();
+    }
   };
 
   window.card = {
-    insertCard: insertCard,
-    renderCard: renderCard,
-    tryCloseCard: tryCloseCard,
-    createNotices: createNotices,
-    remove: removeCards
+    insert: insertCard,
+    render: renderCard,
+    tryClose: tryCloseCard,
+    remove: removeCard
   };
 })();

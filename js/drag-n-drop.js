@@ -61,12 +61,7 @@
     window.data.mapPinMainElement.addEventListener('mousedown', mainPinMouseMovesHandler);
   };
 
-  var mainPinRemoveDragEvent = function () {
-    window.data.mapPinMainElement.removeEventListener('mousedown', mainPinMouseMovesHandler);
-  };
-
   window.dragNDrop = {
-    mainPinAddDragEvent: mainPinAddDragEvent,
-    mainPinRemoveDragEvent: mainPinRemoveDragEvent
+    add: mainPinAddDragEvent
   };
 })();

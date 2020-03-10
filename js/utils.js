@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var DEBOUNCE_INTERVAL = 500;
+
   // Функция генерации случайных чисел
   var getRandomInt = function (minimum, maximum) {
     return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
@@ -53,49 +55,33 @@
     });
   };
 
-  // минутка рефакторинга
-  var isEscEvent = function (evt, action) {
-    if (evt.key === window.data.KEYCODES.esc) {
-      action();
-    }
-  };
+  // дебаунс
+  var debounce = function (cb) {
+    var lastTimeout = null;
 
-  var isEnterEvent = function (evt, action) {
-    if (evt.key === window.data.KEYCODES.enter) {
-      action();
-    }
-  };
-
-  var isLeftClickEvent = function (evt, action) {
-    if (evt.buttons === window.data.KEYCODES.leftClick) {
-      action();
-    }
+    return function () {
+      var parameters = arguments;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        cb.apply(null, parameters);
+      }, DEBOUNCE_INTERVAL);
+    };
   };
 
   var isUndefined = function (element) {
     return typeof element === 'undefined';
   };
 
-  var isKeyExistInObject = function (obj, objKey) {
-    return (objKey in obj);
-  };
-
-  var isValueExistInArray = function (array, arrayValue) {
-    return array.includes(arrayValue);
-  };
-
   window.utils = {
+    debounce: debounce,
     getRandomInt: getRandomInt,
     getRandomProp: getRandomProp,
     shuffleArr: shuffleArr,
     createElement: createElement,
     deleteChildren: deleteChildren,
     toggleDisableAttribute: toggleDisableAttribute,
-    isEscEvent: isEscEvent,
-    isEnterEvent: isEnterEvent,
-    isLeftClickEvent: isLeftClickEvent,
     isUndefined: isUndefined,
-    isKeyExistInObject: isKeyExistInObject,
-    isValueExistInArray: isValueExistInArray
   };
 })();
