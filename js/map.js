@@ -13,6 +13,7 @@
     window.data.mapPinMainElement.removeEventListener('mousedown', mainPinLeftMouseDownHandler);
     window.data.mapPinMainElement.removeEventListener('keydown', mainPinEnterKeyDownHandler);
 
+    window.data.guestSelectElement.addEventListener('change', window.adForm.roomGuestChangeHandler);
     window.data.roomNumberElement.addEventListener('change', window.adForm.roomGuestChangeHandler);
     window.data.housingTypeElement.addEventListener('change', window.adForm.housingTypeChangeHandler);
     window.data.checkinElement.addEventListener('change', window.adForm.checkinChangeHandler);
@@ -52,7 +53,7 @@
     window.data.mapPinMainElement.addEventListener('mousedown', mainPinLeftMouseDownHandler);
     window.data.mapPinMainElement.addEventListener('keydown', mainPinEnterKeyDownHandler);
 
-    window.data.roomNumberElement.removeEventListener('change', window.adForm.roomGuestChangeHandler);
+    window.data.guestSelectElement.removeEventListener('change', window.adForm.roomGuestChangeHandler);
     window.data.housingTypeElement.removeEventListener('change', window.adForm.housingTypeChangeHandler);
     window.data.checkinElement.removeEventListener('change', window.adForm.checkinChangeHandler);
     window.data.checkoutElement.removeEventListener('change', window.adForm.checkoutChangeHandler);
