@@ -82,7 +82,7 @@
 
   // ПРОВАЛ отправки
   var errorUpload = function () {
-    window.messages.showError(window.messages.STATUS);
+    window.messages.showError(window.messages.ERROR);
     resetFormHandler();
     window.map.deactivate();
   };
@@ -90,7 +90,6 @@
   // отправка формы
   var dataSendFormHandler = function (evt) {
     evt.preventDefault();
-    roomGuestChangeHandler();
     window.server.upload(new FormData(window.data.adFormElement), successUpload, errorUpload);
   };
 
