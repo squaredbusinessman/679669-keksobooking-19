@@ -50,7 +50,7 @@
   };
 
 
-  // 1-1 2-2 or 1 3 - 3 or 2 or 1 100 - none
+  // валидация комнат-гостей
   var roomGuestChangeHandler = function () {
     var rooms = window.data.roomNumberElement.value;
     var guests = window.data.guestSelectElement.value;
@@ -68,36 +68,37 @@
   // дополнительные действия при удачной отправке формы
   var resetFormHandler = function () {
     window.data.adFormElement.reset();
-    window.pin.removeCards();
-    window.pin.removePins();
+    window.card.remove();
+    window.pin.remove();
+    window.filter.reset();
   };
 
   // УСПЕХ отправки
   var successUpload = function () {
-    window.messages.successHandler(window.messages.SUCCESS);
+    window.messages.showSuccess(window.messages.SUCCESS);
     resetFormHandler();
-    window.map.deactivateMode();
+    window.map.deactivate();
   };
 
   // ПРОВАЛ отправки
   var errorUpload = function () {
-    window.messages.errorHandler();
-    window.map.deactivateMode();
+    window.messages.showError(window.messages.ERROR);
+    resetFormHandler();
+    window.map.deactivate();
   };
 
   // отправка формы
   var dataSendFormHandler = function (evt) {
     evt.preventDefault();
-
-    window.server.upload(new FormData(window.data.adFormElement), successUpload(), errorUpload());
+    window.server.upload(new FormData(window.data.adFormElement), successUpload, errorUpload);
   };
 
   // сброс формы
-  var resetButtonLeftClickHandler = function (evt) {
-    if (evt.buttons === window.data.KEYCODES.leftClick) {
-      resetFormHandler();
-      window.map.deactivateMode();
-    }
+  var resetButtonClickHandler = function (evt) {
+    evt.preventDefault();
+    resetFormHandler();
+
+    window.map.deactivate();
   };
 
   window.adForm = {
@@ -108,6 +109,6 @@
     roomGuestChangeHandler: roomGuestChangeHandler,
     dataSendFormHandler: dataSendFormHandler,
     resetFormHandler: resetFormHandler,
-    resetButtonLeftClickHandler: resetButtonLeftClickHandler
+    resetButtonClickHandler: resetButtonClickHandler
   };
 })();

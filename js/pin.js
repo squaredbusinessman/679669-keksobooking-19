@@ -14,33 +14,25 @@
     // обработчик событий отрисовки карточки при клике или кейдауне на пин
     element.addEventListener('mousedown', function (evt) {
       if (evt.buttons === window.data.KEYCODES.leftClick) {
-        window.card.tryCloseCard();
-        window.card.insertCard(noticeData);
+        window.card.tryClose();
+        window.card.insert(noticeData);
       }
     });
 
     element.addEventListener('keydown', function (evt) {
       if (evt.key === window.data.KEYCODES.enter) {
-        window.card.tryCloseCard();
-        window.card.insertCard(noticeData);
+        window.card.tryClose();
+        window.card.insert(noticeData);
       }
     });
 
     return element;
   };
 
-  // убираем карточки при отправке формы
-  var removeCards = function () {
-    var card = document.querySelectorAll('.map__card');
-
-    card.forEach(function (cardPopup) {
-      cardPopup.remove();
-    });
-  };
-
   // убираем пины при отправке формы
   var removePins = function () {
     var pins = document.querySelectorAll('.map__pin');
+
     pins.forEach(function (pin) {
       if (!pin.classList.contains('map__pin--main')) {
         pin.remove();
@@ -48,8 +40,13 @@
     });
   };
 
+  var setMainPinDefaultCoordinates = function () {
+    window.data.mapPinMainElement.style.left = window.data.MAIN_PIN.centerX + 'px';
+    window.data.mapPinMainElement.style.top = window.data.MAIN_PIN.centerY + 'px';
+  };
+
   // отрисовка готовых пинов
-  var renderPins = function (data) {
+  var renderPins = window.utils.debounce(function (data) {
     var fragment = document.createDocumentFragment();
 
     var newData = data.filter(function (item) {
@@ -61,12 +58,11 @@
     }
 
     window.data.mapPinsElement.appendChild(fragment);
-  };
+  });
 
   window.pin = {
-    renderPin: renderPin,
-    renderPins: renderPins,
-    removeCards: removeCards,
-    removePins: removePins
+    remove: removePins,
+    render: renderPins,
+    setDefaultCoordinates: setMainPinDefaultCoordinates
   };
 })();

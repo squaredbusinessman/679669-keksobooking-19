@@ -13,19 +13,10 @@
   var guestSelectElement = adFormElement.querySelector('#capacity');
   var checkinElement = adFormElement.querySelector('#timein');
   var checkoutElement = adFormElement.querySelector('#timeout');
+  var formFiltersElement = document.querySelector('.map__filters');
+  var cacheOffers = [];
 
   window.data = {
-    AD_MOCKS: {
-      userPicNum: ['1', '2', '3', '4', '5', '6', '7', '8'],
-      departureTime: ['12:00', '13:00', '14:00'],
-      features: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
-      adTitle: ['Уютная комнатка в общежитии', 'Коробка из под холодильника', 'Бунгало на пляже', 'Пентхаус в небоскрёбе', 'Собачья будка', 'Подвальное помещение', 'Койка в доме престарелых', '2-х ярусная яхта'],
-      adPhoto: ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'],
-      homeType: ['palace', 'flat', 'house', 'bungalow']
-    },
-
-    SIMILAR_AD_VALUE: 8,
-
     KEYCODES: {
       esc: 'Escape',
       enter: 'Enter',
@@ -70,6 +61,8 @@
     roomNumberElement: roomNumberElement,
     guestSelectElement: guestSelectElement,
     checkinElement: checkinElement,
-    checkoutElement: checkoutElement
+    checkoutElement: checkoutElement,
+    formFiltersElement: formFiltersElement,
+    cache: cacheOffers
   };
 })();
