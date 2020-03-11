@@ -18,9 +18,11 @@
     window.data.housingTypeElement.addEventListener('change', window.adForm.housingTypeChangeHandler);
     window.data.checkinElement.addEventListener('change', window.adForm.checkinChangeHandler);
     window.data.checkoutElement.addEventListener('change', window.adForm.checkoutChangeHandler);
-    window.data.adFormElement.addEventListener('submit', window.adForm.dataSendFormHandler);
+    window.data.adFormElement.addEventListener('submit', window.adForm.dataSendHandler);
     window.data.resetButtonElement.addEventListener('click', window.adForm.resetButtonClickHandler);
     window.data.formFiltersElement.addEventListener('change', window.filter.formFiltersChangeHandler);
+    window.data.avatarFileChooserElement.addEventListener('change', window.imageUploader.sendAvatarHandler);
+    window.data.housingPhotoFileChooserElement.addEventListener('change', window.imageUploader.sendHousingPhotoHandler);
 
     window.server.load(function (data) {
       window.data.cache = data;
@@ -57,9 +59,11 @@
     window.data.housingTypeElement.removeEventListener('change', window.adForm.housingTypeChangeHandler);
     window.data.checkinElement.removeEventListener('change', window.adForm.checkinChangeHandler);
     window.data.checkoutElement.removeEventListener('change', window.adForm.checkoutChangeHandler);
-    window.data.adFormElement.removeEventListener('submit', window.adForm.dataSendFormHandler);
+    window.data.adFormElement.removeEventListener('submit', window.adForm.dataSendHandler);
     window.data.resetButtonElement.removeEventListener('click', window.adForm.resetButtonClickHandler);
     window.data.formFiltersElement.removeEventListener('change', window.filter.formFiltersChangeHandler);
+    window.data.avatarFileChooserElement.removeEventListener('change', window.imageUploader.sendAvatarHandler);
+    window.data.housingPhotoFileChooserElement.removeEventListener('change', window.imageUploader.sendHousingPhotoHandler);
   };
 
   window.map = {

@@ -51,11 +51,11 @@
 
     var newData = data.filter(function (item) {
       return item.offer;
-    }).slice(0, 5);
+    }).slice(0, window.data.MAX_RENDER_PIN_QUANTITY);
 
-    for (var i = 0; i < newData.length; i++) {
-      fragment.appendChild(renderPin(newData[i]));
-    }
+    newData.forEach(function (element) {
+      fragment.appendChild(renderPin(element));
+    });
 
     window.data.mapPinsElement.appendChild(fragment);
   });
