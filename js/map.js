@@ -8,7 +8,7 @@
 
     window.adForm.setAddress(true);
     window.utils.toggleDisableAttribute(window.data.adFormFields);
-
+    window.adForm.roomGuestChangeHandler();
 
     window.data.mapPinMainElement.removeEventListener('mousedown', mainPinLeftMouseDownHandler);
     window.data.mapPinMainElement.removeEventListener('keydown', mainPinEnterKeyDownHandler);

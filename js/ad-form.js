@@ -65,22 +65,6 @@
     window.data.roomNumberElement.setCustomValidity(error);
   };
 
-  // вариант с отключением инпутов( написан сложно, частично не понятен, но работает)
-  // var ROOMS_CAPACITY = {
-  //   '1': ['1'],
-  //   '2': ['2', '1'],
-  //   '3': ['3', '2', '1'],
-  //   '100': ['0']
-  // };
-  // var roomGuestChangeHandler = function () {
-  //   if (window.data.guestSelectElement.options.length > 0) {
-  //     [].forEach.call(window.data.guestSelectElement.options, function (item) {
-  //       item.selected = (ROOMS_CAPACITY[window.data.roomNumberElement.value][0] === item.value) ? true : false;
-  //       item.hidden = (ROOMS_CAPACITY[window.data.roomNumberElement.value].indexOf(item.value) < 0) ? false : true;
-  //     });
-  //   }
-  // };
-
   // дополнительные действия при удачной отправке формы
   var resetFormHandler = function () {
     window.data.adFormElement.reset();
@@ -98,7 +82,7 @@
 
   // ПРОВАЛ отправки
   var errorUpload = function () {
-    window.messages.showError();
+    window.messages.showError(window.messages.STATUS);
     resetFormHandler();
     window.map.deactivate();
   };
@@ -106,7 +90,7 @@
   // отправка формы
   var dataSendFormHandler = function (evt) {
     evt.preventDefault();
-    debugger
+    roomGuestChangeHandler();
     window.server.upload(new FormData(window.data.adFormElement), successUpload, errorUpload);
   };
 
