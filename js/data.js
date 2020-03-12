@@ -76,12 +76,12 @@
 
     UPLOAD_IMAGE: {
       avatar: {
-        width: 70,
-        height: 70
+        width: 40,
+        height: 44
       },
       housingPhoto: {
-        width: 45,
-        height: 40
+        width: 70,
+        height: 70
       }
     },
 
