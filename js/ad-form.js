@@ -14,6 +14,10 @@
       mainPinState = newMainPinState;
     }
 
+    if (isActive) {
+      mainPinState.top += Math.round(window.data.mapPinMainElement.clientHeight / 2 + window.data.PIN.paddingTop);
+    }
+
     if (!isActive) {
       mainPinState.left = window.data.MAIN_PIN.centerX;
       mainPinState.top = window.data.MAIN_PIN.centerY;

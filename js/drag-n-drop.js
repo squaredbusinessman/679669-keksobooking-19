@@ -41,7 +41,7 @@
       window.data.mapPinMainElement.style.top = newTopCoordinate + 'px';
       window.data.mapPinMainElement.style.left = newLeftCoordinate + 'px';
       window.adForm.setAddress(true, {
-        top: newTopCoordinate,
+        top: newTopCoordinate - Math.round(window.data.mapPinMainElement.clientHeight / 2 + window.data.PIN.paddingTop),
         left: newLeftCoordinate
       });
     };
