@@ -18,6 +18,11 @@
       mainPinState.top += Math.round(window.data.mapPinMainElement.clientHeight / 2 + window.data.PIN.paddingTop);
     }
 
+    if (!isActive) {
+      mainPinState.left = window.data.MAIN_PIN.centerX;
+      mainPinState.top = window.data.MAIN_PIN.centerY;
+    }
+
     inputAddress.value = mainPinState.left + ', ' + mainPinState.top;
   };
 
@@ -25,16 +30,16 @@
   var housingTypeChangeHandler = function () {
     switch (window.data.housingTypeElement.value) {
       case 'bungalo':
-        window.data.priceElement.placeholder = 0;
+        window.data.priceElement.placeholder = window.data.HOUSING_TYPES.bungalo.minPrice;
         return;
       case 'flat':
-        window.data.priceElement.placeholder = 1000;
+        window.data.priceElement.placeholder = window.data.HOUSING_TYPES.flat.minPrice;
         return;
       case 'house':
-        window.data.priceElement.placeholder = 5000;
+        window.data.priceElement.placeholder = window.data.HOUSING_TYPES.house.minPrice;
         return;
       case 'palace':
-        window.data.priceElement.placeholder = 10000;
+        window.data.priceElement.placeholder = window.data.HOUSING_TYPES.palace.minPrice;
         return;
     }
 
@@ -56,9 +61,9 @@
     var guests = window.data.guestSelectElement.value;
     var error = '';
 
-    if (rooms === 100 && guests > 0) {
+    if (rooms === window.data.ROOMS_GUESTS.maxRooms && guests > window.data.ROOMS_GUESTS.minGuests) {
       error = 'Для выбранного количества гостей размещение невозможно';
-    } else if (guests > rooms || guests === 0) {
+    } else if (guests > rooms || guests === window.data.ROOMS_GUESTS.minGuests) {
       error = 'Количество гостей больше или меньше чем комнат';
     }
 
@@ -90,14 +95,15 @@
   // отправка формы
   var dataSendFormHandler = function (evt) {
     evt.preventDefault();
+
     window.server.upload(new FormData(window.data.adFormElement), successUpload, errorUpload);
   };
 
   // сброс формы
   var resetButtonClickHandler = function (evt) {
     evt.preventDefault();
-    resetFormHandler();
 
+    resetFormHandler();
     window.map.deactivate();
   };
 
@@ -107,8 +113,7 @@
     checkinChangeHandler: checkinChangeHandler,
     checkoutChangeHandler: checkoutChangeHandler,
     roomGuestChangeHandler: roomGuestChangeHandler,
-    dataSendFormHandler: dataSendFormHandler,
-    resetFormHandler: resetFormHandler,
+    dataSendHandler: dataSendFormHandler,
     resetButtonClickHandler: resetButtonClickHandler
   };
 })();

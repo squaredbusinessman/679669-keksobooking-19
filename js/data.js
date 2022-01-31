@@ -15,8 +15,14 @@
   var checkoutElement = adFormElement.querySelector('#timeout');
   var formFiltersElement = document.querySelector('.map__filters');
   var cacheOffers = [];
+  var avatarFileChooserElement = document.querySelector('.ad-form__field input[type=file]');
+  var avatarPreviewElement = document.querySelector('.ad-form-header__preview');
+  var housingPhotoFileChooserElement = document.querySelector('.ad-form__upload input[type=file]');
+  var housingPhotoPreviewElement = document.querySelector('.ad-form__photo');
 
   window.data = {
+    MAX_RENDER_PIN_QUANTITY: 5,
+
     KEYCODES: {
       esc: 'Escape',
       enter: 'Enter',
@@ -24,10 +30,26 @@
     },
 
     HOUSING_TYPES: {
-      flat: {ru: 'Квартира'},
-      bungalo: {ru: 'Бунгало'},
-      house: {ru: 'Дом'},
-      palace: {ru: 'Дворец'}
+      flat: {
+        ru: 'Квартира',
+        minPrice: 1000
+      },
+      bungalo: {
+        ru: 'Бунгало',
+        minPrice: 0
+      },
+      house: {
+        ru: 'Дом',
+        minPrice: 5000
+      },
+      palace: {
+        ru: 'Дворец',
+        minPrice: 10000}
+    },
+
+    ROOMS_GUESTS: {
+      maxRooms: 100,
+      minGuests: 0
     },
 
     PIN: {
@@ -47,8 +69,22 @@
       minX: 0,
       maxX: 1200,
       minY: 130,
-      maxY: 600
+      maxY: 630
     },
+
+    IMAGE_FILE_TYPES: ['gif', 'jpg', 'jpeg', 'png'],
+
+    UPLOAD_IMAGE: {
+      avatar: {
+        width: 40,
+        height: 44
+      },
+      housingPhoto: {
+        width: 70,
+        height: 70
+      }
+    },
+
 
     mapBlockElement: mapBlockElement,
     adFormElement: adFormElement,
@@ -63,6 +99,10 @@
     checkinElement: checkinElement,
     checkoutElement: checkoutElement,
     formFiltersElement: formFiltersElement,
-    cache: cacheOffers
+    cache: cacheOffers,
+    avatarFileChooserElement: avatarFileChooserElement,
+    avatarPreviewElement: avatarPreviewElement,
+    housingPhotoFileChooserElement: housingPhotoFileChooserElement,
+    housingPhotoPreviewElement: housingPhotoPreviewElement
   };
 })();
