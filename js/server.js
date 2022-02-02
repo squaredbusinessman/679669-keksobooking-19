@@ -2,8 +2,8 @@
 
 (function () {
   var SERVER = {
-    LOAD_URL: 'https://js.dump.academy/keksobooking/data',
-    UPLOAD_URL: 'https://js.dump.academy/keksobooking',
+    LOAD_URL: 'https://24.javascript.pages.academy/keksobooking/data',
+    UPLOAD_URL: 'https://24.javascript.pages.academy/keksobooking',
     TIMEOUT: 10000
   };
 
